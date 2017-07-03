@@ -1,0 +1,1265 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="-kiDoxWZ_ezIUVBSVQQF1juVwZygZ3eS9BM-D33eE34" />
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="IgvSdkD53Z" />
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Objective-C," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="原文：关于SDWebImage源码常见问题  简析前段时间，和一个小伙交流，那小伙问我：小伙：“NSString声明属性时，用什么修饰？”我：“copy”小伙：“为什么用copy，用strong有什么问题么？”我：“如果使用strong修饰,只是对字符串做了浅拷贝，当某个对象持有这个属性时，会改变这个属性值。”小伙：“那我就想让它改变呢？”我：“……(⊙o⊙)?” 出来混也有三年了，竟然又在最基础">
+<meta name="keywords" content="Objective-C">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于SDWebImage源码常见问题">
+<meta property="og:url" content="https://zonghongyan.github.io/2017/05/17/201705172052/index.html">
+<meta property="og:site_name" content="仁伯安">
+<meta property="og:description" content="原文：关于SDWebImage源码常见问题  简析前段时间，和一个小伙交流，那小伙问我：小伙：“NSString声明属性时，用什么修饰？”我：“copy”小伙：“为什么用copy，用strong有什么问题么？”我：“如果使用strong修饰,只是对字符串做了浅拷贝，当某个对象持有这个属性时，会改变这个属性值。”小伙：“那我就想让它改变呢？”我：“……(⊙o⊙)?” 出来混也有三年了，竟然又在最基础">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/949086-0014ef8fd4998a39.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-07-02T01:39:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于SDWebImage源码常见问题">
+<meta name="twitter:description" content="原文：关于SDWebImage源码常见问题  简析前段时间，和一个小伙交流，那小伙问我：小伙：“NSString声明属性时，用什么修饰？”我：“copy”小伙：“为什么用copy，用strong有什么问题么？”我：“如果使用strong修饰,只是对字符串做了浅拷贝，当某个对象持有这个属性时，会改变这个属性值。”小伙：“那我就想让它改变呢？”我：“……(⊙o⊙)?” 出来混也有三年了，竟然又在最基础">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/949086-0014ef8fd4998a39.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 'undefined',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zonghongyan.github.io/2017/05/17/201705172052/"/>
+
+
+
+
+
+  <title>关于SDWebImage源码常见问题 | 仁伯安</title>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=60821256";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">仁伯安</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">摒弃诱惑，否极泰来(Get rid of the temptation,After a storm comes a calm)</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://zonghongyan.github.io/2017/05/17/201705172052/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="仁伯安">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/avatar-60.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="仁伯安">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">关于SDWebImage源码常见问题</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-17T20:52:11+08:00">
+                2017-05-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS进阶篇/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS进阶篇</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>原文：<a href="http://www.jianshu.com/p/52845e44163a" target="_blank" rel="external">关于SDWebImage源码常见问题</a></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/949086-0014ef8fd4998a39.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="SDWebImage.png"></p>
+<h3 id="简析"><a href="#简析" class="headerlink" title="简析"></a>简析</h3><p>前段时间，和一个小伙交流，那小伙问我：<br>小伙：“NSString声明属性时，用什么修饰？”<br>我：“copy”<br>小伙：“为什么用copy，用strong有什么问题么？”<br>我：“如果使用strong修饰,只是对字符串做了浅拷贝，当某个对象持有这个属性时，会改变这个属性值。”<br>小伙：“那我就想让它改变呢？”<br>我：“……(⊙o⊙)?”</p>
+<p>出来混也有三年了，竟然又在最基础的上面栽了，好尴尬。其实说到底还是自己内功修为不够。蜻蜓点水，对于开发者而言是大忌，做过几款APP就觉得自己怎样怎样，真真是井底之蛙🐸。<br>做为iOS开发者，相信大家都会或多或少的使用或了解过SDWebImage，剖析其源码的文章不在少数，今天我从问题驱动的角度来简单梳理下我所理解的SDWebImage。<br><a id="more"></a></p>
+<h3 id="SDWebImages图片类型识别问题"><a href="#SDWebImages图片类型识别问题" class="headerlink" title="SDWebImages图片类型识别问题"></a>SDWebImages图片类型识别问题</h3><p>大家都知道，UIImageView默认情况下只能加载png类型的图片，加载jpg/gif等类型时是要单独处理的，那么SDWebImage是怎么识别网络图片的类型呢？<br>阅读源码，大家会发现在NSData的分类文件NSData+ImageContentType.m中，它是根据文件头来识别，即图片流文件的第一个字节判断。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">#import &quot;NSData+ImageContentType.h&quot;</div><div class="line">@implementation NSData (ImageContentType)</div><div class="line"></div><div class="line">+ (SDImageFormat)sd_imageFormatForImageData:(nullable NSData *)data &#123;</div><div class="line">    if (!data) &#123;</div><div class="line">        return SDImageFormatUndefined;</div><div class="line">    &#125;</div><div class="line">    uint8_t c;</div><div class="line">    [data getBytes:&amp;c length:1];</div><div class="line">    switch (c) &#123;</div><div class="line">        case 0xFF:</div><div class="line">            return SDImageFormatJPEG;</div><div class="line">        case 0x89:</div><div class="line">            return SDImageFormatPNG;</div><div class="line">        case 0x47:</div><div class="line">            return SDImageFormatGIF;</div><div class="line">        case 0x49:</div><div class="line">        case 0x4D:</div><div class="line">            return SDImageFormatTIFF;</div><div class="line">        case 0x52:</div><div class="line">            // R as RIFF for WEBP</div><div class="line">            if (data.length &lt; 12) &#123;</div><div class="line">                return SDImageFormatUndefined;</div><div class="line">            &#125;</div><div class="line">            NSString *testString = [[NSString alloc] initWithData:[data subdataWithRange:NSMakeRange(0, 12)] encoding:NSASCIIStringEncoding];</div><div class="line">            if ([testString hasPrefix:@&quot;RIFF&quot;] &amp;&amp; [testString hasSuffix:@&quot;WEBP&quot;]) &#123;</div><div class="line">                return SDImageFormatWebP;</div><div class="line">            &#125;</div><div class="line">    &#125;</div><div class="line">    return SDImageFormatUndefined;</div><div class="line">&#125;</div><div class="line">@end</div></pre></td></tr></table></figure>
+<p>OpenCV图片类型识别也类似，参见：<a href="http://blog.csdn.net/include1224/article/details/5195470" target="_blank" rel="external">include1224的博客：读文件头判断图片类型</a></p>
+<h3 id="SDWebImage的下载队列机制"><a href="#SDWebImage的下载队列机制" class="headerlink" title="SDWebImage的下载队列机制"></a>SDWebImage的下载队列机制</h3><p>SDWebImage加载网络图片的方式是异步加载的方式，不管是从性能方面还是从为用户节省流量的角度而言，SDWebImage做的都是比较好的。<br>那么，问题来了:<br>1、 异步加载多张图片时，SDWebImage是怎么处理的？是否有对应的并发队列？<br>2、如果有，它的并发队列运行机制是怎样的呢？既然是并发队列，最大的并发数是多少？<br>3、当多个图片下载任务结束时，在队列中移除的策略是怎样的，是先进先出？还是后进先出？<br>4、当某个图片的URL为错误链接，或者服务器异常，或者网络异常的情况下，SDWebImage有没有异常超时处理？如果有超时机制，时长是多少呢？<br>下面我将一一为大家找到答案：<br>SDWebImage网络图片下载是通过SDWebImageDownloader和SDWebImageDownloaderOperation类来完成的。</p>
+<ul>
+<li>SDWebImageDownloaderOperation封装了单个图片下载操作，它有一个start方法用来开启一个下载任务，看源码可以看到，在start方法体中有一段：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">NSURLSessionConfiguration *sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];</div><div class="line">sessionConfig.timeoutIntervalForRequest = 15;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>在内部明确写了单个任务的超时时间15秒。</p>
+<ul>
+<li><p>SDWebImageDownloader是用来管理SDWebImageDownloaderOperation图片下载任务的（另外在SDWebImageDownloader中也可以配置任务超时时长），它持有多个公有属性：maxConcurrentDownloads（最大并发数）、downloadTimeout（任务超时时长）、executionOrder（队列执行方式）等，维护着一个私有并发下载队列downloadQueue和一个最新任务添加任务lastAddedOperation。<br>看源码我们可以轻松了解到，SDWebImage的下载队列默认情况下是SDWebImageDownloaderFIFOExecutionOrder，是先进先出的，下载队列并发数为6。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">downloadQueue.maxConcurrentOperationCount = 6;</div><div class="line">downloadTimeout： 15.0;</div><div class="line">executionOrder: SDWebImageDownloaderFIFOExecutionOrder;</div></pre></td></tr></table></figure>
+</li>
+<li><p>详见源码：</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">@interface SDWebImageDownloader () </div><div class="line">@property (strong, nonatomic, nonnull) NSOperationQueue *downloadQueue;</div><div class="line">......</div><div class="line">@end</div><div class="line">- (nonnull instancetype)initWithSessionConfiguration:(nullable NSURLSessionConfiguration *)sessionConfiguration &#123;</div><div class="line">    if ((self = [super init])) &#123;</div><div class="line">        _operationClass = [SDWebImageDownloaderOperation class];</div><div class="line">        _shouldDecompressImages = YES;</div><div class="line">        _executionOrder = SDWebImageDownloaderFIFOExecutionOrder;</div><div class="line">        _downloadQueue = [NSOperationQueue new];</div><div class="line">        _downloadQueue.maxConcurrentOperationCount = 6;</div><div class="line">        _downloadQueue.name = @&quot;com.hackemist.SDWebImageDownloader&quot;;</div><div class="line">        _URLOperations = [NSMutableDictionary new];</div><div class="line">#ifdef SD_WEBP</div><div class="line">        _HTTPHeaders = [@&#123;@&quot;Accept&quot;: @&quot;image/webp,image/*;q=0.8&quot;&#125; mutableCopy];</div><div class="line">#else</div><div class="line">        _HTTPHeaders = [@&#123;@&quot;Accept&quot;: @&quot;image/*;q=0.8&quot;&#125; mutableCopy];</div><div class="line">#endif</div><div class="line">        _barrierQueue = dispatch_queue_create(&quot;com.hackemist.SDWebImageDownloaderBarrierQueue&quot;, DISPATCH_QUEUE_CONCURRENT);</div><div class="line">        _downloadTimeout = 15.0;</div><div class="line">        sessionConfiguration.timeoutIntervalForRequest = _downloadTimeout;</div><div class="line">        /**</div><div class="line">         *  Create the session for this task</div><div class="line">         *  We send nil as delegate queue so that the session creates a serial operation queue for performing all delegate</div><div class="line">         *  method calls and completion handler calls.</div><div class="line">         */</div><div class="line">        self.session = [NSURLSession sessionWithConfiguration:sessionConfiguration</div><div class="line">                                                     delegate:self</div><div class="line">                                                delegateQueue:nil];</div><div class="line">    &#125;</div><div class="line">    return self;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="SDWebImage缓存机制"><a href="#SDWebImage缓存机制" class="headerlink" title="SDWebImage缓存机制"></a>SDWebImage缓存机制</h3><p>SDWebImage缓存机制其实由两部分组成：内存缓存、磁盘缓存。从SDImageCache文件中我们可以清楚地看出这一点，其中memCache即内存缓存，diskCachePath即磁盘缓存，数据文件存储在沙盒中：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@interface SDImageCache ()</div><div class="line">@property (strong, nonatomic, nonnull) NSCache *memCache;</div><div class="line">@property (strong, nonatomic, nonnull) NSString *diskCachePath;</div><div class="line">......</div><div class="line">@end</div></pre></td></tr></table></figure></p>
+<p><strong>内存缓存</strong><br>先说下内存缓存memCache，为了完善内存缓存，SDWebImage实现了NSCache的一个子类AutoPurgeCache，扩充了NSCache，当内存警告时，它会接受UIApplicationDidReceiveMemoryWarningNotification通知，自动执行removeAllObjects操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">@interface AutoPurgeCache : NSCache</div><div class="line">@end</div><div class="line">@implementation AutoPurgeCache</div><div class="line">- (nonnull instancetype)init &#123;</div><div class="line">    self = [super init];</div><div class="line">    if (self) &#123;</div><div class="line">#if SD_UIKIT</div><div class="line">        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAllObjects) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];</div><div class="line">#endif</div><div class="line">    &#125;</div><div class="line">    return self;</div><div class="line">&#125;</div><div class="line">- (void)dealloc &#123;</div><div class="line">#if SD_UIKIT</div><div class="line">    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidReceiveMemoryWarningNotification object:nil];</div><div class="line">#endif</div><div class="line">&#125;</div><div class="line">@end</div></pre></td></tr></table></figure>
+<p>如果大家细心的话会发现，SDWebImage做了内存缓存，当我们频繁的使用SDWebImage加载多张图片时，却为何基本不会出现内存暴涨的情况呢？其实这一切归功于自动释放池@autoreleasepool。<br><strong>磁盘缓存</strong><br>接下来咱们说下磁盘缓存，磁盘缓存文件是存储在沙盒中的，存储过程比较复杂。我先简单说下，SDWebImage加载图片的大致流程，相信从中，大家会对diskCache有所了解。<br>在使用SDWebImage时，往往是从UIImageView+WebCache文件开始的，我们使用SDWebImage第一步就是要引入UIImageView的分类WebCache，然后调用sd_setImageWithURL:方法，完成图片的异步加载。<br>图片加载的具体流程如下：</p>
+<ul>
+<li>调用sd_setImageWithURL方法时，它首先是通过URL作为key查询内存缓存，即SDImageCache的memCache属性，如果存在直接显示到View上。</li>
+<li>反之，将通过md5编码URL作为文件名，去沙盒（即SDImageCache的diskCachePath路径下）中查询有无此文件，如果存在，就把沙盒中的文件加载到内存缓存memCache中，然后通过SDWebImageDecoder解码后，直接显示到View上。</li>
+<li>如果沙盒中不存在，则先将占位图片placeholderImage加载到View上，紧接着去SDWebImageDownloader的downloadQueue队列中，查找是否有正在下载该图片的下载任务，如果存在继续该任务。</li>
+<li>如果下载队列不存在，创建图片下载任务SDWebImageDownloaderOperation，然后通过lastAddedOperation，根据对应的机制添加到下载并发队列downloadQueue中，下载完毕后，将操作在队列中移除，将图片添加到内存缓存中，直接显示到View，并将该文件压缩编码后存储到沙盒中，将通过md5编码URL作为文件名。</li>
+</ul>
+<p>相信看到上面的流程后，大家对磁盘缓存机制有所了解，当然也带来了一些疑问，比如：<br>1、图片文件为什么使用md5编码的URL作为文件名？<br>2、磁盘缓存，既然称为缓存，就肯定有一定的时间期限，缓存的时长是多少？<br>3、文件过期之后，在什么时机清除过期图片文件的？<br>4、沙盒大小是有限度的，那么为SDWebImage预留的磁盘空间有没有大小限制？<br>5、如果我想清空所有的SDWebImage缓存怎么清除？如果我们需要清除特定的图片缓存又该怎么处理？<br>下文，我将为大家一一解答这一系列疑问：</p>
+<h5 id="SDWebImage缓存图片命名问题"><a href="#SDWebImage缓存图片命名问题" class="headerlink" title="SDWebImage缓存图片命名问题"></a>SDWebImage缓存图片命名问题</h5><p>SDWebImage是怎样维护缓存图片的？在SDImageCache文件中，我们不难发现，它是利用了MD5的压缩性特性、容易计算、强抗碰撞等特性，将图片的URL进行md5编码，作为文件名存储到沙盒中的。</p>
+<blockquote>
+<p><a href="http://baike.baidu.com/item/MD5?fr=aladdin" target="_blank" rel="external">MD5百度百科</a><br>MD5算法具有以下特点：<br>1、压缩性：任意长度的数据，算出的MD5值长度都是固定的。<br>2、容易计算：从原数据计算出MD5值很容易。<br>3、抗修改性：对原数据进行任何改动，哪怕只修改1个字节，所得到的MD5值都有很大区别。<br>4、强抗碰撞：已知原数据和其MD5值，想找到一个具有相同MD5值的数据（即伪造数据）是非常困难的。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">- (nullable NSString *)cachePathForKey:(nullable NSString *)key inPath:(nonnull NSString *)path &#123;</div><div class="line">    NSString *filename = [self cachedFileNameForKey:key];</div><div class="line">    return [path stringByAppendingPathComponent:filename];</div><div class="line">&#125;</div><div class="line">- (nullable NSString *)defaultCachePathForKey:(nullable NSString *)key &#123;</div><div class="line">    return [self cachePathForKey:key inPath:self.diskCachePath];</div><div class="line">&#125;</div><div class="line">- (nullable NSString *)cachedFileNameForKey:(nullable NSString *)key &#123;</div><div class="line">    const char *str = key.UTF8String;</div><div class="line">    if (str == NULL) &#123;</div><div class="line">        str = &quot;&quot;;</div><div class="line">    &#125;</div><div class="line">    unsigned char r[CC_MD5_DIGEST_LENGTH];</div><div class="line">    CC_MD5(str, (CC_LONG)strlen(str), r);</div><div class="line">    NSString *filename = [NSString stringWithFormat:@&quot;%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%@&quot;,</div><div class="line">                          r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8], r[9], r[10],</div><div class="line">                          r[11], r[12], r[13], r[14], r[15], [key.pathExtension isEqualToString:@&quot;&quot;] ? @&quot;&quot; : [NSString stringWithFormat:@&quot;.%@&quot;, key.pathExtension]];</div><div class="line">    return filename;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="SDWebImage缓存文件保留时长及缓存空间大小"><a href="#SDWebImage缓存文件保留时长及缓存空间大小" class="headerlink" title="SDWebImage缓存文件保留时长及缓存空间大小"></a>SDWebImage缓存文件保留时长及缓存空间大小</h5><p>既然是缓存，肯定有相应的时间期限，默认情况下SDWebImage的缓存时长为一周，并且缓存空间可以自定义。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">#import &quot;SDImageCacheConfig.h&quot;</div><div class="line">static const NSInteger kDefaultCacheMaxCacheAge = 60 * 60 * 24 * 7; // 1 week</div><div class="line">@implementation SDImageCacheConfig</div><div class="line"></div><div class="line">- (instancetype)init &#123;</div><div class="line">    if (self = [super init]) &#123;</div><div class="line">        _shouldDecompressImages = YES;</div><div class="line">        _shouldDisableiCloud = YES;</div><div class="line">        _shouldCacheImagesInMemory = YES;</div><div class="line">        _maxCacheAge = kDefaultCacheMaxCacheAge;</div><div class="line">        _maxCacheSize = 0;</div><div class="line">    &#125;</div><div class="line">    return self;</div><div class="line">&#125;</div><div class="line">@end</div></pre></td></tr></table></figure></p>
+<h5 id="过滤URL，禁用缓存"><a href="#过滤URL，禁用缓存" class="headerlink" title="过滤URL，禁用缓存"></a>过滤URL，禁用缓存</h5><p>如果想过滤特定URL，不使用缓存机制，可以在对应位置加入如下代码过滤。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">SDWebImageManager.sharedManager.cacheKeyFilter = ^NSString * _Nullable(NSURL * _Nullable url) &#123;</div><div class="line"></div><div class="line">        url = [[NSURL alloc] initWithScheme:url.scheme host:url.host path:url.path];</div><div class="line">        NSLog(@&quot;url.scheme:%@, url.host:%@, url.path: %@&quot;, url.scheme, url.host, url.path);</div><div class="line">        // if([[url.host absoluteString] isEqualToString:@&quot;upload-images.jianshu.io&quot;])</div><div class="line">        if ([[url absoluteString] isEqualToString:@&quot;http://upload-images.jianshu.io/upload_images/949086-5d2c51f1e3a9cddd.png&quot;])</div><div class="line">        &#123;</div><div class="line">            return nil;</div><div class="line">        &#125;</div><div class="line">        return [url absoluteString];</div><div class="line">    &#125;;</div></pre></td></tr></table></figure>
+<h5 id="清除特定图片缓存"><a href="#清除特定图片缓存" class="headerlink" title="清除特定图片缓存"></a>清除特定图片缓存</h5><p>刚说过，SDWebImage加载图片是有缓存的，默认存储一周的时间。使用SDWebImage加载同样URL的图片时，优先会从缓存中取，而不是每次重新请求加载，那么问题来了，我们的头像/广告图等，需要实时刷新，我们要需要清除特定的图片缓存。<br>单单就头像/广告图更新问题而言，无非是更新缓存问题，有很多方法解决，</p>
+<ul>
+<li>使用options:SDWebImageRefreshCached刷新缓存，但是有些童鞋反应该方法有闪烁问题，甚至有时并没有更新图片，所以保险起见，最好还是手动清缓存的方式。</li>
+<li>每次清除掉图片缓存，重新加载的方式，代码如下：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">    NSURL *imageURL = [NSURL URLWithString:@&quot;http://upload-images.jianshu.io/upload_images/949086-5d2c51f1e3a9cddd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/999&quot;];</div><div class="line">// 获取对应URL链接的key</div><div class="line">    NSString *key = [[SDWebImageManager sharedManager] cacheKeyForURL:imageURL];</div><div class="line">    NSString *pathStr = [[SDImageCache sharedImageCache] defaultCachePathForKey:key];</div><div class="line">    NSLog(@&quot;key存储的路径: %@&quot;, pathStr);</div><div class="line">// 删除对应key的文件</div><div class="line">    [[SDImageCache sharedImageCache] removeImageForKey:key withCompletion:^&#123;</div><div class="line">        [self.tempImageView sd_setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@&quot;placeholderHead.png&quot;]];</div><div class="line">    &#125;];</div></pre></td></tr></table></figure>
+<h5 id="清除过期文件的时机"><a href="#清除过期文件的时机" class="headerlink" title="清除过期文件的时机"></a>清除过期文件的时机</h5><p>通过上文的解答，大家知道磁盘缓存的文件是有时间期限的，那么，SDWebImage在什么时机清除过期文件的呢？在SDImageCache文件我们同样可以得到答案：<br>清除过期旧文件的时间点有两处：程序切到后台、杀死APP时。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteOldFiles) name:UIApplicationWillTerminateNotification object:nil];</div><div class="line"></div><div class="line">[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backgroundDeleteOldFiles) name:UIApplicationDidEnterBackgroundNotification object:nil];</div></pre></td></tr></table></figure>
+<p>具体源码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">@interface AutoPurgeCache : NSCache</div><div class="line">@end</div><div class="line"></div><div class="line">@implementation AutoPurgeCache</div><div class="line"></div><div class="line">- (nonnull instancetype)init &#123;</div><div class="line">    self = [super init];</div><div class="line">    if (self) &#123;</div><div class="line">#if SD_UIKIT</div><div class="line">        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAllObjects) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];</div><div class="line">#endif</div><div class="line">    &#125;</div><div class="line">    return self;</div><div class="line">&#125;</div><div class="line">- (void)dealloc &#123;</div><div class="line">#if SD_UIKIT</div><div class="line">    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidReceiveMemoryWarningNotification object:nil];</div><div class="line">#endif</div><div class="line">&#125;</div><div class="line"></div><div class="line">@end</div></pre></td></tr></table></figure></p>
+<p>本文已在版权印备案，如需转载请在版权印获取授权。<br><strong><a href="https://101705110006220.bqy.mobi" target="_blank" rel="external">获取版权</a></strong></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Objective-C/" rel="tag"># Objective-C</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/18/201702181911/" rel="next" title="Hexo框架之GitHub博客搭建及SEO站点收录">
+                <i class="fa fa-chevron-left"></i> Hexo框架之GitHub博客搭建及SEO站点收录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/16/201706161952/" rel="prev" title="Xcode9下iOS11适配注意事项及无线部署调试">
+                Xcode9下iOS11适配注意事项及无线部署调试 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+       
+         <div id="gitment-container"></div>
+       
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar/avatar-60.png"
+               alt="仁伯安" />
+          <p class="site-author-name" itemprop="name">仁伯安</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zonghongyan" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/ac49bc773ff9" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/zonghongyan" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://developer.apple.com" title="apple开发者" target="_blank">apple开发者</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://yangkaik.github.io" title="yangkaik" target="_blank">yangkaik</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.jianshu.com/u/ac49bc773ff9" title="仁伯安简书" target="_blank">仁伯安简书</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://gold.xitu.io/user/58a17f6c8d6d81006ca065e7" title="掘金" target="_blank">掘金</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简析"><span class="nav-number">1.</span> <span class="nav-text">简析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SDWebImages图片类型识别问题"><span class="nav-number">2.</span> <span class="nav-text">SDWebImages图片类型识别问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SDWebImage的下载队列机制"><span class="nav-number">3.</span> <span class="nav-text">SDWebImage的下载队列机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SDWebImage缓存机制"><span class="nav-number">4.</span> <span class="nav-text">SDWebImage缓存机制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#SDWebImage缓存图片命名问题"><span class="nav-number">4.0.1.</span> <span class="nav-text">SDWebImage缓存图片命名问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SDWebImage缓存文件保留时长及缓存空间大小"><span class="nav-number">4.0.2.</span> <span class="nav-text">SDWebImage缓存文件保留时长及缓存空间大小</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#过滤URL，禁用缓存"><span class="nav-number">4.0.3.</span> <span class="nav-text">过滤URL，禁用缓存</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#清除特定图片缓存"><span class="nav-number">4.0.4.</span> <span class="nav-text">清除特定图片缓存</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#清除过期文件的时机"><span class="nav-number">4.0.5.</span> <span class="nav-text">清除过期文件的时机</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">仁伯安</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+     
+     
+     
+     
+     <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+     <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+     
+         <script type="text/javascript">
+             var gitment = new Gitment({
+                id: document.location.href, 
+                 owner: 'zonghongyan',
+                 repo: 'zonghongyan.github.io',
+                 oauth: {
+                     client_id: '8bb735003260a23ded3d',
+                     client_secret: 'a882b3feb6e36ae4f367fe601615f6d1b7f1a232',
+                 }});
+             gitment.render('gitment-container');
+         </script>
+     
+ 
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

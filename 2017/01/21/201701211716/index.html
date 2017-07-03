@@ -1,0 +1,1252 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="-kiDoxWZ_ezIUVBSVQQF1juVwZygZ3eS9BM-D33eE34" />
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="IgvSdkD53Z" />
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Objective-C,CocoaPods,Demo,GitHub," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="原文：iOS APP框架搭建简析（附GitHub托管Demo） 都说“三岁看老”，我在和谐社会中摸爬 打滚了也近三个年头，这不快过年了，今年朋友/发小寻找“心理平衡”的首选对象依旧是哥，看着大家满意而归的身影，荣幸之至！">
+<meta name="keywords" content="Objective-C,CocoaPods,Demo,GitHub">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS APP框架搭建简析（附GitHub托管Demo）">
+<meta property="og:url" content="https://zonghongyan.github.io/2017/01/21/201701211716/index.html">
+<meta property="og:site_name" content="仁伯安">
+<meta property="og:description" content="原文：iOS APP框架搭建简析（附GitHub托管Demo） 都说“三岁看老”，我在和谐社会中摸爬 打滚了也近三个年头，这不快过年了，今年朋友/发小寻找“心理平衡”的首选对象依旧是哥，看着大家满意而归的身影，荣幸之至！">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/949086-5d2c51f1e3a9cddd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/999">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/949086-ee055b2d834fe16f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/333">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/949086-d1c1a7d5667f4790.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/333">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/949086-2a666bab095b4516.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/949086-2dcc6c79dcda8877.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/949086-d895f93f22c04798.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/949086-2d9d952dffa45a3f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/666">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/949086-a50193f1cc5032d3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/666">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/949086-ccf562d6183c66ce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/949086-fae1c0e0bc51f5b7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-07-02T01:39:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS APP框架搭建简析（附GitHub托管Demo）">
+<meta name="twitter:description" content="原文：iOS APP框架搭建简析（附GitHub托管Demo） 都说“三岁看老”，我在和谐社会中摸爬 打滚了也近三个年头，这不快过年了，今年朋友/发小寻找“心理平衡”的首选对象依旧是哥，看着大家满意而归的身影，荣幸之至！">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/949086-5d2c51f1e3a9cddd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/999">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 'undefined',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zonghongyan.github.io/2017/01/21/201701211716/"/>
+
+
+
+
+
+  <title>iOS APP框架搭建简析（附GitHub托管Demo） | 仁伯安</title>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=60821256";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">仁伯安</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">摒弃诱惑，否极泰来(Get rid of the temptation,After a storm comes a calm)</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://zonghongyan.github.io/2017/01/21/201701211716/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="仁伯安">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/avatar-60.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="仁伯安">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">iOS APP框架搭建简析（附GitHub托管Demo）</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-21T17:16:55+08:00">
+                2017-01-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS进阶篇/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS进阶篇</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>原文：<a href="http://www.jianshu.com/p/89e25c288d76" target="_blank" rel="external">iOS APP框架搭建简析（附GitHub托管Demo）</a></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/949086-5d2c51f1e3a9cddd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/999" alt="奋斗.png"><br>都说“三岁看老”，我在和谐社会中摸爬 打滚了也近三个年头，这不快过年了，今年朋友/发小寻找“心理平衡”的首选对象依旧是哥，看着大家满意而归的身影，荣幸之至！<a id="more"></a>捧一捧凉水扑到脸上，抬头照照镜子打量着依旧“枯瘦如柴”的自己，看着时间给刻下的“抬头纹”，盯着那浑浊但依旧坚定的眼睛，哥想对自己说：“大雁，你可以的，虽然<strong>没有以前好配合</strong>了，你终有一天会成功的，虽然<strong>还很遥远</strong>！乖乖，好了，傻B可以写帖子了……”</p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>不管开发任何软件，我们的原则就是尽量做到“高内聚低耦合”。所谓“低耦合”是指软件结构中模块与模块之间的耦合度或关联程度，模块之间接口的调用及实现的复杂度、交互数据的多少等，决定了软件耦合度的高低强弱；所谓“高内聚”是从模块内部功能的层面而言的，模块内部特定功能的代码元素的紧密程度决定了代码内聚性的高低。</p>
+<p>网上不乏有所谓“十分钟搭建强壮APP框架”、“快速搭建强壮APP框架”等帖子，且不去讲好坏，总之，实践是检验真理的唯一标准，今天我简单汇报下本人做项目时，框架的搭建流程及注意事项。</p>
+<h3 id="框架搭建"><a href="#框架搭建" class="headerlink" title="框架搭建"></a>框架搭建</h3><p>框架搭建是个劳神费心的事情，因为在搭建时你要考虑到各种可能，比如：怎么设计使得流程更清晰？怎么设计更易于分工协作？怎么设计更容易快速定位代码模块？怎么保证系统的易扩展性？等等都是我们要提前把握好的。先看下大致效果图如下：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/949086-ee055b2d834fe16f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/333" alt="启动图效果.png"><br><img src="http://upload-images.jianshu.io/upload_images/949086-d1c1a7d5667f4790.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/333" alt="最终效果.gif"></p>
+<h4 id="一、-框架结构"><a href="#一、-框架结构" class="headerlink" title="一、 框架结构"></a>一、 框架结构</h4><p>APP的结构一般分为三条线：</p>
+<ul>
+<li>一条主框架流程；</li>
+<li>一条是用户登录框架流程；</li>
+<li>一条其他如广告页、欢迎页等</li>
+</ul>
+<p>相对而言，主框架流程较为复杂，顶级容器为UITabBarController，子容器为UINavigationController，其中顶级容器放3-5个导航控制器，导航控制器的rootViewController为各模块的首页。登录框架流程及其他一般为线性流程，个别会涉及到根视图的切换，相对简单，如果画成树状结构图的话大致如下：<br><img src="http://upload-images.jianshu.io/upload_images/949086-2a666bab095b4516.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="APP结构图.png"></p>
+<h4 id="二、-StoryBoard分离"><a href="#二、-StoryBoard分离" class="headerlink" title="二、 StoryBoard分离"></a>二、 StoryBoard分离</h4><p>为了配置三方库方便，我使用CocoaPods工程(基于CocoaPods 1.1.1)，下为Podfile文件引入的三方库：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">platform :ios,’8.0’</div><div class="line"></div><div class="line">target ‘EVNEstorePlatform’ do</div><div class="line"></div><div class="line">pod &apos;MBProgressHUD&apos;, &apos;~&gt; 1.0.0&apos;</div><div class="line">pod &apos;FMDB&apos;</div><div class="line">pod &apos;SDWebImage&apos;, &apos;~&gt; 3.8&apos;</div><div class="line">pod &apos;IQKeyboardManager&apos;, &apos;~&gt; 3.3.7&apos;</div><div class="line">pod &apos;MJRefresh&apos;</div><div class="line">pod &apos;MJExtension&apos;</div><div class="line">pod &apos;MWPhotoBrowser&apos;</div><div class="line">pod &apos;AFNetworking&apos;, &apos;~&gt; 3.0&apos;</div><div class="line"></div><div class="line">end</div></pre></td></tr></table></figure></p>
+<p>如遇到问题，可参照<a href="http://www.jianshu.com/p/f089fae248c1" target="_blank" rel="external">CocoaPods工作原理及使用中遇到的问题</a>，解决或问阿度。</p>
+<p>在实际的项目开发中，没有说谁的框架更优，结构都是大同小异，适合自己的团队才是最重要的。单从框架搭建及界面布局而言，有的团队喜欢StoryBoard，因为所见即所得，给外行介绍起来较为方便，一个模块的所有的界面铺满屏幕，很酷炫的感觉。有的团队喜欢纯代码，当看到自己写一串串字符渲染出“神秘”动画，说不出的满足感。当然我们团队奉行的是中庸之道，框架搭建+个别简易界面我们使用StoryBoard，其他使用纯代码的方式，这也是踩过坑之后，倒逼的结果。<br><img src="http://upload-images.jianshu.io/upload_images/949086-2dcc6c79dcda8877.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="StoryBoard.png"><br>毋庸置疑StoryBoard有很多的优点，但对于团队协作开发，有时会有说不出的痛，比如：同时修改StoryBoard文件遇到的冲突；即便是细微的位移调整，编译起来也需要足够耐心；更新了下Xcode怎么布局全乱了等等问题，正因为此，我们采用折中方案，尽量将StoryBoard分离使用，Main.storyboard中为主框架顶级容器和登录流程的顶级容器，而其他3-5个模块如，首页Host.storyboard、个人中心MineCenter.storyboard等，使用单独的StoryBoard文件，除此之外基本使用纯代码方式编写。<br><img src="http://upload-images.jianshu.io/upload_images/949086-d895f93f22c04798.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="模块.png"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/949086-2d9d952dffa45a3f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/666" alt="MainStoryBoard.png"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/949086-a50193f1cc5032d3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/666" alt="MineCenterStoryBoard.png"></p>
+<p>在进行故事版分离时，主要是自定义UITabBarController的过程。<br><strong>首先</strong>，根据上面<strong>模板</strong>图，新建故事版文件；<br><strong>然后</strong>，按照第一节<strong>框架结构图</strong>，将特定的控制器容器、导航控制器、视图控制器拖入对应的故事版中（StoryBoard文件）；<br><strong>再次</strong>，在自定义的UITabBarController中，连接各个模块，在这个过程中UITabBarController起到了应用的连接中枢的作用，为了炫技，哥做了个中间凸起效果，主要的TabBarController代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">#pragma mark: 首页storyboard</div><div class="line">    UIImage *hostSelectImg = [UIImage imageNamed:@&quot;hostViewSelect&quot;];</div><div class="line">    UIImage *hostUnSelectImg = [UIImage imageNamed:@&quot;hostViewUnSelect&quot;];</div><div class="line">    UIStoryboard *hostSB = [UIStoryboard storyboardWithName:@&quot;Host&quot; bundle:nil];</div><div class="line">    UINavigationController *hostNaviVC = [hostSB instantiateViewControllerWithIdentifier:@&quot;hostNavigationC&quot;];</div><div class="line">    hostNaviVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@&quot;首页&quot; image:[self scaleImage:hostUnSelectImg] selectedImage:[self scaleImage:hostSelectImg]];</div><div class="line">    hostNaviVC.tabBarItem.tag = 0;</div><div class="line"></div><div class="line">#pragma mark: 关注storyboard</div><div class="line">    UIImage *attentionSelectImg = [UIImage imageNamed:@&quot;attentionSelect.png&quot;];</div><div class="line">    UIImage *attentionUnSelectImg = [UIImage imageNamed:@&quot;attentionUnSelect.png&quot;];</div><div class="line">    UIStoryboard *attentionSB = [UIStoryboard storyboardWithName:@&quot;Attention&quot; bundle:nil];</div><div class="line">    UINavigationController *attentionNaviVC = [attentionSB instantiateViewControllerWithIdentifier:@&quot;attentionNavigationC&quot;];</div><div class="line">    attentionNaviVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@&quot;关注&quot; image:[self scaleImage:attentionUnSelectImg] selectedImage:[self scaleImage:attentionSelectImg]];</div><div class="line">    attentionNaviVC.tabBarItem.tag = 1;</div><div class="line"></div><div class="line">#pragma mark: 发现storyboard</div><div class="line">    UIImage *findSelectImg = [UIImage imageNamed:@&quot;findSelect.png&quot;];</div><div class="line">    UIImage *findUnSelectImImg = [UIImage imageNamed:@&quot;findUnSelect.png&quot;];</div><div class="line">    UIStoryboard *findSB = [UIStoryboard storyboardWithName:@&quot;Find&quot; bundle:nil];</div><div class="line">    UINavigationController *findNaviVC = [findSB instantiateViewControllerWithIdentifier:@&quot;findNavigationC&quot;];</div><div class="line">    findNaviVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@&quot;发现&quot; image:[UIImage imageWithCGImage:findUnSelectImImg.CGImage scale:1.5 orientation:findUnSelectImImg.imageOrientation] selectedImage:[UIImage imageWithCGImage:findSelectImg.CGImage scale:1.5 orientation:findSelectImg.imageOrientation]];</div><div class="line">    [findNaviVC.tabBarItem setImageInsets:UIEdgeInsetsMake(-14, 0, 14, 0)];</div><div class="line">    findNaviVC.tabBarItem.tag = 2;</div><div class="line">    findNaviVC.tabBarItem.selectedImage = [[UIImage imageNamed:@&quot;findSelect.png&quot;] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];</div><div class="line">    findNaviVC.tabBarItem.image = [[UIImage imageNamed:@&quot;findUnSelect.png&quot;] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];</div><div class="line"></div><div class="line">#pragma mark: 购物车storyboard</div><div class="line">    UIImage *goodsCarSelectImg = [UIImage imageNamed:@&quot;goodsCarSelect.png&quot;];</div><div class="line">    UIImage *goodsCarUnSelectImg = [UIImage imageNamed:@&quot;goodsCarUnSelect.png&quot;];</div><div class="line">    UIStoryboard *goodsCarSB = [UIStoryboard storyboardWithName:@&quot;GoodsCar&quot; bundle:nil];</div><div class="line">    UINavigationController *goodsCarNaviVC = [goodsCarSB instantiateViewControllerWithIdentifier:@&quot;goodsCarNavigationC&quot;];</div><div class="line">    goodsCarNaviVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@&quot;购物车&quot; image:[self scaleImage:goodsCarUnSelectImg] selectedImage:[self scaleImage:goodsCarSelectImg]];</div><div class="line">    goodsCarNaviVC.tabBarItem.tag = 3;</div><div class="line"></div><div class="line">#pragma mark: 个人中心storyboard</div><div class="line">    UIImage *mineCenterSelectImg = [UIImage imageNamed:@&quot;mineCenterSelect.png&quot;];</div><div class="line">    UIImage *mineCenterUnSelectImg = [UIImage imageNamed:@&quot;mineCenterUnSelect.png&quot;];</div><div class="line">    UIStoryboard *mineCenterSB = [UIStoryboard storyboardWithName:@&quot;MineCenter&quot; bundle:nil];</div><div class="line">    UINavigationController *mineCenterNaviVC = [mineCenterSB instantiateViewControllerWithIdentifier:@&quot;mineCenterNavigationC&quot;];</div><div class="line">    mineCenterNaviVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@&quot;我&quot; image:[self scaleImage:mineCenterUnSelectImg] selectedImage:[self scaleImage:mineCenterSelectImg]];</div><div class="line">    mineCenterNaviVC.tabBarItem.tag = 4;</div><div class="line"></div><div class="line">#pragma mark: 连接</div><div class="line">    self.viewControllers = @[hostNaviVC, attentionNaviVC, findNaviVC, goodsCarNaviVC, mineCenterNaviVC];</div></pre></td></tr></table></figure></p>
+<p><strong>最后</strong>， 创建各模块对应的视图控制器，将其匹配到StoryBoard中的控件中。<br><img src="http://upload-images.jianshu.io/upload_images/949086-ccf562d6183c66ce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="框架目录.png"></p>
+<h4 id="三、-APP使用流程"><a href="#三、-APP使用流程" class="headerlink" title="三、 APP使用流程"></a>三、 APP使用流程</h4><p>APP运行的流程一般为，首先执行AppDelegate的代理方法didFinishLaunching，进入启动页，判断是否是首次使用APP，如果是进入欢迎页，否则直接验证广告页验证，进而进入加载广告页，最后进入首页。具体流程图如下：<br><img src="http://upload-images.jianshu.io/upload_images/949086-fae1c0e0bc51f5b7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="APP流程图.png"><br>我的框架也是根据这个流程搭建。</p>
+<h3 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h3><p>战战兢兢，如履薄冰，望再接再厉，下为工程托管地址，<a href="https://github.com/zonghongyan/EVNEstorePlatform.git" target="_blank" rel="external">EVNEstorePlatform GitHub</a>，如果觉得有帮助，请不要吝啬点赞，可以在GitHub给个star，<strong>O(∩_∩)O谢谢</strong>……</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Objective-C/" rel="tag"># Objective-C</a>
+          
+            <a href="/tags/CocoaPods/" rel="tag"># CocoaPods</a>
+          
+            <a href="/tags/Demo/" rel="tag"># Demo</a>
+          
+            <a href="/tags/GitHub/" rel="tag"># GitHub</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/13/201701131803/" rel="next" title="iOS自签名HTTPS证书单向校验方案">
+                <i class="fa fa-chevron-left"></i> iOS自签名HTTPS证书单向校验方案
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/18/201702181911/" rel="prev" title="Hexo框架之GitHub博客搭建及SEO站点收录">
+                Hexo框架之GitHub博客搭建及SEO站点收录 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+       
+         <div id="gitment-container"></div>
+       
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar/avatar-60.png"
+               alt="仁伯安" />
+          <p class="site-author-name" itemprop="name">仁伯安</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zonghongyan" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/ac49bc773ff9" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/zonghongyan" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://developer.apple.com" title="apple开发者" target="_blank">apple开发者</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://yangkaik.github.io" title="yangkaik" target="_blank">yangkaik</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.jianshu.com/u/ac49bc773ff9" title="仁伯安简书" target="_blank">仁伯安简书</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://gold.xitu.io/user/58a17f6c8d6d81006ca065e7" title="掘金" target="_blank">掘金</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#框架搭建"><span class="nav-number">2.</span> <span class="nav-text">框架搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、-框架结构"><span class="nav-number">2.1.</span> <span class="nav-text">一、 框架结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、-StoryBoard分离"><span class="nav-number">2.2.</span> <span class="nav-text">二、 StoryBoard分离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、-APP使用流程"><span class="nav-number">2.3.</span> <span class="nav-text">三、 APP使用流程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结语"><span class="nav-number">3.</span> <span class="nav-text">结语</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">仁伯安</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+     
+     
+     
+     
+     <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+     <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+     
+         <script type="text/javascript">
+             var gitment = new Gitment({
+                id: document.location.href, 
+                 owner: 'zonghongyan',
+                 repo: 'zonghongyan.github.io',
+                 oauth: {
+                     client_id: '8bb735003260a23ded3d',
+                     client_secret: 'a882b3feb6e36ae4f367fe601615f6d1b7f1a232',
+                 }});
+             gitment.render('gitment-container');
+         </script>
+     
+ 
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

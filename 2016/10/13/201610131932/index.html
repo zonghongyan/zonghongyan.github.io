@@ -1,0 +1,1245 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="-kiDoxWZ_ezIUVBSVQQF1juVwZygZ3eS9BM-D33eE34" />
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="IgvSdkD53Z" />
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Objective-C,Swift," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="原文：Swift和Objective-C混编的注意啦 前言Swift已推出数年，与Objective-C相比Swift的语言机制及使用简易程度上更接地气，大大降低了iOS入门门槛。当然这对新入行的童鞋们来讲，的确算是福音，但对于整个iOS编程从业者来讲，真真是，曾几何时“高大上”，转瞬之间“矮矬穷”。再加上培训班横行，批量批发之下，iOS再也看不到当年的辉煌。往事不再提，事还是要做滴。iOS10推">
+<meta name="keywords" content="Objective-C,Swift">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Swift和Objective-C混编的注意啦">
+<meta property="og:url" content="https://zonghongyan.github.io/2016/10/13/201610131932/index.html">
+<meta property="og:site_name" content="仁伯安">
+<meta property="og:description" content="原文：Swift和Objective-C混编的注意啦 前言Swift已推出数年，与Objective-C相比Swift的语言机制及使用简易程度上更接地气，大大降低了iOS入门门槛。当然这对新入行的童鞋们来讲，的确算是福音，但对于整个iOS编程从业者来讲，真真是，曾几何时“高大上”，转瞬之间“矮矬穷”。再加上培训班横行，批量批发之下，iOS再也看不到当年的辉煌。往事不再提，事还是要做滴。iOS10推">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/949086-4009987e29482a25.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-07-02T01:39:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Swift和Objective-C混编的注意啦">
+<meta name="twitter:description" content="原文：Swift和Objective-C混编的注意啦 前言Swift已推出数年，与Objective-C相比Swift的语言机制及使用简易程度上更接地气，大大降低了iOS入门门槛。当然这对新入行的童鞋们来讲，的确算是福音，但对于整个iOS编程从业者来讲，真真是，曾几何时“高大上”，转瞬之间“矮矬穷”。再加上培训班横行，批量批发之下，iOS再也看不到当年的辉煌。往事不再提，事还是要做滴。iOS10推">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/949086-4009987e29482a25.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 'undefined',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zonghongyan.github.io/2016/10/13/201610131932/"/>
+
+
+
+
+
+  <title>Swift和Objective-C混编的注意啦 | 仁伯安</title>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=60821256";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">仁伯安</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">摒弃诱惑，否极泰来(Get rid of the temptation,After a storm comes a calm)</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://zonghongyan.github.io/2016/10/13/201610131932/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="仁伯安">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/avatar-60.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="仁伯安">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Swift和Objective-C混编的注意啦</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-13T19:32:32+08:00">
+                2016-10-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS网络篇/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS网络篇</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>原文：<a href="http://www.jianshu.com/p/2ed48b954612" target="_blank" rel="external">Swift和Objective-C混编的注意啦</a></p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>Swift已推出数年，与Objective-C相比Swift的语言机制及使用简易程度上更接地气，大大降低了iOS入门门槛。当然这对新入行的童鞋们来讲，的确算是福音，但对于整个iOS编程从业者来讲，真真是，曾几何时“高大上”，转瞬之间“矮矬穷”。再加上培训班横行，批量批发之下，iOS再也看不到当年的辉煌。<br><img src="http://upload-images.jianshu.io/upload_images/949086-4009987e29482a25.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Swift.png"><br>往事不再提，事还是要做滴。iOS10推出后，紧跟着Xcode8也推送了更新，细心者会发现，Xcode8下iOS版本最低适配已变为iOS8.0，加上Swift版本趋于稳定，从某种意义上讲，Swift的时代正式开启，替代Objective-C怕也只是时间问题。当然，在这之前，我们也应做好准备。今年越来的越多的公司，也开始了Swift和Objective-C混编。<a id="more"></a></p>
+<p>我们今天就来看看两者混编中的一些注意事项及问题：</p>
+<h3 id="混编"><a href="#混编" class="headerlink" title="混编"></a>混编</h3><p>混编也无非两种情况，</p>
+<ul>
+<li>在Objective - C工程或者文件使用Swift的文件；</li>
+<li>在Swift工程或者文件使用Objective - C文件</li>
+</ul>
+<p>在混编的过程中最重要的两个文件：<br><strong>1. 桥接文件：</strong><br>桥接文件“ProjectName-Bridging-Header.h”，在首次创建其他文件的时候，会自动生成。如果不小心删除后，也可以手动添加，不过名字必须是“ProjectName-Bridging-Header.h”头文件（名称组成:工程名-Bridging-Header.h），如果名字记不清也可以自己新建Header file后，在Targets–&gt;Build Settings–&gt;Swift Compiler - General–&gt;Objective-C Bridging Header配置文件路径，这个文件主要是Swift使用OC类时使用。</p>
+<p><strong>2. Objective-C Generated Interface Header Name文件</strong><br>这个文件是混编时，系统生成的Swift文件对应的Objective-C的头文件，具体可以在Targets–&gt;Build Settings–&gt;Swift Compiler - General–&gt;Objective-C Generated Interface Header Name进行配置，默认文件名是工程名-Swift.h，一般不做改动。</p>
+<h5 id="在Objective-C工程或者文件使用Swift的文件"><a href="#在Objective-C工程或者文件使用Swift的文件" class="headerlink" title="在Objective - C工程或者文件使用Swift的文件"></a>在Objective - C工程或者文件使用Swift的文件</h5><p>当在OC文件中调用Swift文件中的类的时候，首先在OC文件中要加上 #import “<br><strong>ProjectName</strong>-swift.h”(名字组成:工程名-swift)</p>
+<p>这个文件虽然在工程中看不到，但是她真实存在，编译后，你可以按住Command+单击该文件名，就会看到具体生成的代码。<br>引入后，具体类的使用，直接按照OC的方式使用即可。</p>
+<h5 id="在Swift工程或者文件使用Objective-C文件"><a href="#在Swift工程或者文件使用Objective-C文件" class="headerlink" title="在Swift工程或者文件使用Objective - C文件"></a>在Swift工程或者文件使用Objective - C文件</h5><p>   当在Swift中使用OC文件的时候，只需在桥接文件即projectName-Bridging-Header.h文件中引入需要的头文件。<br>具体使用，按照对应的Swift语法结构来即可。</p>
+<h3 id="混编注意事项"><a href="#混编注意事项" class="headerlink" title="混编注意事项"></a>混编注意事项</h3><h5 id="对于需要混编的Swift类添加-objc声明或继承NSObject或NSObject的子类"><a href="#对于需要混编的Swift类添加-objc声明或继承NSObject或NSObject的子类" class="headerlink" title="对于需要混编的Swift类添加@objc声明或继承NSObject或NSObject的子类"></a>对于需要混编的Swift类添加@objc声明或继承NSObject或NSObject的子类</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">class TestClass</div><div class="line">&#123;</div><div class="line">// 属性</div><div class="line">// 实现</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果要在Objective-C类中使用TestClass类，应当使用@objc加以声明，或者将TestClass继承自NSObject或NSObject的子类，否则，引入ProductName-Swift.h之后，程序找不到对应类。</p>
+<h5 id="使用第三方Framework"><a href="#使用第三方Framework" class="headerlink" title="使用第三方Framework"></a>使用第三方Framework</h5><ul>
+<li>设置： target–&gt;build setting –&gt;Packaging –&gt;Defines Module为 “Yes”；</li>
+<li>然后，配置文件Target -&gt; Build Phases  -&gt; Link Binary，添加要导入的Framework；</li>
+<li>最后，还是要配置桥接文件，比如要使用 abc-lib.framework库中的 abc.h 就要这样配置：#import”abc-lib/abc.h”;</li>
+</ul>
+<h5 id="Subclass子类问题"><a href="#Subclass子类问题" class="headerlink" title="Subclass子类问题"></a>Subclass子类问题</h5><p>对于自定义的类而言，Objective-C的类，不能继承自Swift的类，即要混编的OC类不能是Swift类的子类。反过来，需要混编的Swift类可以继承自OC的类。 <a href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html#//apple_ref/doc/uid/TP40014216-CH10-ID122" target="_blank" rel="external">注解</a></p>
+<h5 id="OC宏文件"><a href="#OC宏文件" class="headerlink" title="OC宏文件"></a>OC宏文件</h5><p>如Swift文件要使用OC中定义的宏，只能使用常量简单宏文件。</p>
+<h5 id="Swift独有特性"><a href="#Swift独有特性" class="headerlink" title="Swift独有特性"></a>Swift独有特性</h5><p>Swift中有许多OC没有的特性，比如，Swift有元组、为一等公民的函数、还有特有的枚举类型。所以，要使用的混编文件要注意Swift独有属性问题。</p>
+<h3 id="案例之Swift中使用OC的block"><a href="#案例之Swift中使用OC的block" class="headerlink" title="案例之Swift中使用OC的block"></a>案例之Swift中使用OC的block</h3><p><strong>Swift 2.* </strong>：<del>Swift中使用Closure不能使用Block作为属性进行传值，必须是初始化方法或函数。</del></p>
+<p> <strong>Objective-C文件中</strong>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">#import &lt;UIKit/UIKit.h&gt;</div><div class="line"></div><div class="line">typedef void (^Myblock)(NSString *arg); </div><div class="line"></div><div class="line">@interface FirViewController : UIViewController </div><div class="line">//@property (copy, nonatomic) Myblock myBlock; </div><div class="line">//这种作为公共参数的形式，如果在Swift类中去回调的话，是有问题的。提示没有初始化方法，所以使用下面的以Block为参数的方法 </div><div class="line"></div><div class="line">- (void)transValue:(Myblock) block;</div><div class="line"></div><div class="line">@end</div></pre></td></tr></table></figure></p>
+<p><strong>下面是.m文件</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">#import &quot;FirViewController.h&quot; </div><div class="line">@implementation FirViewController </div><div class="line"></div><div class="line">- (void)viewDidLoad </div><div class="line">&#123; </div><div class="line">    [super viewDidLoad]; </div><div class="line">    self.view.backgroundColor = [UIColor whiteColor]; </div><div class="line">&#125; </div><div class="line"></div><div class="line">- (void)transValue:(Myblock)block</div><div class="line">&#123; </div><div class="line">    if (block) </div><div class="line">    &#123; </div><div class="line">        block(@&quot;firBack&quot;); </div><div class="line">    &#125; </div><div class="line">&#125; </div><div class="line">@end</div></pre></td></tr></table></figure></p>
+<p>在Swift文件回调：</p>
+<p> 在Swift使用OC的类时，首先在桥接文件中声明oc的头文件<br>工程名-Bridging-Header.h这是创建Swift工程的情况下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">import UIKit </div><div class="line">class ViewController: UIViewController </div><div class="line">&#123; </div><div class="line">   override func viewDidLoad() </div><div class="line">    &#123; </div><div class="line">        super.viewDidLoad() </div><div class="line">        self.view.backgroundColor = UIColor.whiteColor() </div><div class="line">    &#125; </div><div class="line">    @IBOutlet weak var goFirst: UIButton! </div><div class="line">    @IBAction func goFirstAction(sender: AnyObject) </div><div class="line">    &#123; </div><div class="line">        let firVC:FirViewController = FirViewController() </div><div class="line">        firVC. transValue &#123; ( arg:String !) -&gt; Void in </div><div class="line">            self.aBtn?.setTitle(arg, forState: UIControlState.Normal)</div><div class="line">        &#125; </div><div class="line">        self.navigationController?.pushViewController(firVC, animated: true) </div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Objective-C/" rel="tag"># Objective-C</a>
+          
+            <a href="/tags/Swift/" rel="tag"># Swift</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/01/201608061544/" rel="next" title="iOS的消息推送简析">
+                <i class="fa fa-chevron-left"></i> iOS的消息推送简析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/19/201610191550/" rel="prev" title="iOS指纹识别登录流程及实现">
+                iOS指纹识别登录流程及实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+       
+         <div id="gitment-container"></div>
+       
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar/avatar-60.png"
+               alt="仁伯安" />
+          <p class="site-author-name" itemprop="name">仁伯安</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zonghongyan" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/ac49bc773ff9" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/zonghongyan" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://developer.apple.com" title="apple开发者" target="_blank">apple开发者</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://yangkaik.github.io" title="yangkaik" target="_blank">yangkaik</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.jianshu.com/u/ac49bc773ff9" title="仁伯安简书" target="_blank">仁伯安简书</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://gold.xitu.io/user/58a17f6c8d6d81006ca065e7" title="掘金" target="_blank">掘金</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#混编"><span class="nav-number">2.</span> <span class="nav-text">混编</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#在Objective-C工程或者文件使用Swift的文件"><span class="nav-number">2.0.1.</span> <span class="nav-text">在Objective - C工程或者文件使用Swift的文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在Swift工程或者文件使用Objective-C文件"><span class="nav-number">2.0.2.</span> <span class="nav-text">在Swift工程或者文件使用Objective - C文件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#混编注意事项"><span class="nav-number">3.</span> <span class="nav-text">混编注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#对于需要混编的Swift类添加-objc声明或继承NSObject或NSObject的子类"><span class="nav-number">3.0.1.</span> <span class="nav-text">对于需要混编的Swift类添加@objc声明或继承NSObject或NSObject的子类</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用第三方Framework"><span class="nav-number">3.0.2.</span> <span class="nav-text">使用第三方Framework</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Subclass子类问题"><span class="nav-number">3.0.3.</span> <span class="nav-text">Subclass子类问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#OC宏文件"><span class="nav-number">3.0.4.</span> <span class="nav-text">OC宏文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Swift独有特性"><span class="nav-number">3.0.5.</span> <span class="nav-text">Swift独有特性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例之Swift中使用OC的block"><span class="nav-number">4.</span> <span class="nav-text">案例之Swift中使用OC的block</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">仁伯安</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+     
+     
+     
+     
+     <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+     <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+     
+         <script type="text/javascript">
+             var gitment = new Gitment({
+                id: document.location.href, 
+                 owner: 'zonghongyan',
+                 repo: 'zonghongyan.github.io',
+                 oauth: {
+                     client_id: '8bb735003260a23ded3d',
+                     client_secret: 'a882b3feb6e36ae4f367fe601615f6d1b7f1a232',
+                 }});
+             gitment.render('gitment-container');
+         </script>
+     
+ 
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

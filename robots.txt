@@ -1,0 +1,15 @@
+# hexo robots.txt
+User-agent: *
+Allow: /
+Allow: /archives/
+Allow: /tags/
+Allow: /caterories/
+Allow: /about/
+
+Disallow: /js/
+Disallow: /css/
+Disallow: /lib/
+Disallow: /paths/
+
+Sitemap: https://zonghongyan.github.io/sitemap.xml
+Sitemap: https://zonghongyan.github.io/baidusitemap.xml
