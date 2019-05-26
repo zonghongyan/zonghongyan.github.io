@@ -3,34 +3,9 @@
 
 
     
-    
-  <url>
-    <loc>https://zonghongyan.github.io/2018/09/28/201809280021/</loc>
-    <lastmod>2019-05-26T03:03:54.572Z</lastmod>
-    <data>
-        <display>
-        <title>Xcode仿Cocoapods自动化锁定文件（locked file）</title>
-        <pubTime>2018-09-27T16:21:21.000Z</pubTime>
-        
-        <tag>GitHub</tag>
-         
-        <tag>Xcode</tag>
-         
-        <tag>博客</tag>
-         
-         
-           
-             
-              <breadCrumb title="随笔" url="https://zonghongyan.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
   <url>
     <loc>https://zonghongyan.github.io/2018/06/29/201806292034/</loc>
-    <lastmod>2019-05-26T03:00:56.673Z</lastmod>
+    <lastmod>2019-05-26T03:14:18.876Z</lastmod>
     <data>
         <display>
         <title>基于Jenkins和fastlane的iOS持续集成与发布环境搭建</title>
@@ -55,6 +30,31 @@
 
     
   <url>
+    <loc>https://zonghongyan.github.io/2018/09/28/201809280021/</loc>
+    <lastmod>2019-05-26T03:14:06.703Z</lastmod>
+    <data>
+        <display>
+        <title>Xcode仿Cocoapods自动化锁定文件（locked file）</title>
+        <pubTime>2018-09-27T16:21:21.000Z</pubTime>
+        
+        <tag>GitHub</tag>
+         
+        <tag>博客</tag>
+         
+        <tag>Xcode</tag>
+         
+         
+           
+             
+              <breadCrumb title="随笔" url="https://zonghongyan.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
+  <url>
     <loc>https://zonghongyan.github.io/2017/06/16/201706161952/</loc>
     <lastmod>2017-10-14T09:32:35.000Z</lastmod>
     <data>
@@ -63,6 +63,32 @@
         <pubTime>2017-06-16T11:52:00.000Z</pubTime>
         
         <tag>Objective-C</tag>
+         
+         
+           
+             
+              <breadCrumb title="随笔" url="https://zonghongyan.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://zonghongyan.github.io/2017/06/29/201706292034/</loc>
+    <lastmod>2017-07-13T08:45:04.000Z</lastmod>
+    <data>
+        <display>
+        <title>Hexo博客框架下Gitment取代多说评论</title>
+        <pubTime>2017-06-29T12:34:34.000Z</pubTime>
+        
+        <tag>GitHub</tag>
+         
+        <tag>Hexo</tag>
+         
+        <tag>NexT</tag>
+         
+        <tag>博客</tag>
          
          
            
@@ -99,23 +125,23 @@
 
     
   <url>
-    <loc>https://zonghongyan.github.io/2016/12/23/201612230912/</loc>
+    <loc>https://zonghongyan.github.io/2016/10/19/201610191550/</loc>
     <lastmod>2017-07-13T08:45:04.000Z</lastmod>
     <data>
         <display>
-        <title>苹果APP接入HTTPS延迟截止时间是妥协吗</title>
-        <pubTime>2016-12-23T01:12:11.000Z</pubTime>
+        <title>iOS指纹识别登录流程及实现</title>
+        <pubTime>2016-10-19T07:50:03.000Z</pubTime>
         
         <tag>Objective-C</tag>
          
-        <tag>HTTPS</tag>
+        <tag>Demo</tag>
          
-        <tag>ATS</tag>
+        <tag>Touch ID</tag>
          
          
            
              
-              <breadCrumb title="iOS网络篇" url="https://zonghongyan.github.io/categories/iOS%E7%BD%91%E7%BB%9C%E7%AF%87/"/>
+              <breadCrumb title="iOS进阶篇" url="https://zonghongyan.github.io/categories/iOS%E8%BF%9B%E9%98%B6%E7%AF%87/"/>
           
         </display>
     </data>
@@ -136,30 +162,6 @@
            
              
               <breadCrumb title="iOS基础篇" url="https://zonghongyan.github.io/categories/iOS%E5%9F%BA%E7%A1%80%E7%AF%87/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://zonghongyan.github.io/2016/10/19/201610191550/</loc>
-    <lastmod>2017-07-13T08:45:04.000Z</lastmod>
-    <data>
-        <display>
-        <title>iOS指纹识别登录流程及实现</title>
-        <pubTime>2016-10-19T07:50:03.000Z</pubTime>
-        
-        <tag>Objective-C</tag>
-         
-        <tag>Demo</tag>
-         
-        <tag>Touch ID</tag>
-         
-         
-           
-             
-              <breadCrumb title="iOS进阶篇" url="https://zonghongyan.github.io/categories/iOS%E8%BF%9B%E9%98%B6%E7%AF%87/"/>
           
         </display>
     </data>
@@ -193,6 +195,54 @@
 
     
   <url>
+    <loc>https://zonghongyan.github.io/2017/02/18/201702181911/</loc>
+    <lastmod>2017-07-13T08:45:04.000Z</lastmod>
+    <data>
+        <display>
+        <title>Hexo框架之GitHub博客搭建及SEO站点收录</title>
+        <pubTime>2017-02-18T11:11:11.000Z</pubTime>
+        
+        <tag>GitHub</tag>
+         
+        <tag>Hexo</tag>
+         
+        <tag>NexT</tag>
+         
+        <tag>博客</tag>
+         
+         
+           
+             
+              <breadCrumb title="随笔" url="https://zonghongyan.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://zonghongyan.github.io/2016/10/13/201610131932/</loc>
+    <lastmod>2017-07-13T08:45:04.000Z</lastmod>
+    <data>
+        <display>
+        <title>Swift和Objective-C混编的注意啦</title>
+        <pubTime>2016-10-13T11:32:32.000Z</pubTime>
+        
+        <tag>Objective-C</tag>
+         
+        <tag>Swift</tag>
+         
+         
+           
+             
+              <breadCrumb title="iOS网络篇" url="https://zonghongyan.github.io/categories/iOS%E7%BD%91%E7%BB%9C%E7%AF%87/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://zonghongyan.github.io/2017/05/17/201705172052/</loc>
     <lastmod>2017-07-13T08:45:04.000Z</lastmod>
     <data>
@@ -213,18 +263,18 @@
 
     
   <url>
-    <loc>https://zonghongyan.github.io/2016/06/13/201606141032/</loc>
+    <loc>https://zonghongyan.github.io/2016/08/01/201608061544/</loc>
     <lastmod>2017-07-13T08:45:04.000Z</lastmod>
     <data>
         <display>
-        <title>哥的单例是伪的还是真的有图为证(Singleton)</title>
-        <pubTime>2016-06-13T15:44:17.000Z</pubTime>
+        <title>iOS的消息推送简析</title>
+        <pubTime>2016-08-01T15:44:17.000Z</pubTime>
         
         <tag>Objective-C</tag>
          
-        <tag>Singleton</tag>
+        <tag>BadgeValue</tag>
          
-        <tag>GCD</tag>
+        <tag>Notification</tag>
          
          
            
@@ -261,70 +311,18 @@
 
     
   <url>
-    <loc>https://zonghongyan.github.io/2017/02/18/201702181911/</loc>
+    <loc>https://zonghongyan.github.io/2016/06/13/201606141032/</loc>
     <lastmod>2017-07-13T08:45:04.000Z</lastmod>
     <data>
         <display>
-        <title>Hexo框架之GitHub博客搭建及SEO站点收录</title>
-        <pubTime>2017-02-18T11:11:11.000Z</pubTime>
-        
-        <tag>GitHub</tag>
-         
-        <tag>博客</tag>
-         
-        <tag>Hexo</tag>
-         
-        <tag>NexT</tag>
-         
-         
-           
-             
-              <breadCrumb title="随笔" url="https://zonghongyan.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://zonghongyan.github.io/2017/06/29/201706292034/</loc>
-    <lastmod>2017-07-13T08:45:04.000Z</lastmod>
-    <data>
-        <display>
-        <title>Hexo博客框架下Gitment取代多说评论</title>
-        <pubTime>2017-06-29T12:34:34.000Z</pubTime>
-        
-        <tag>GitHub</tag>
-         
-        <tag>博客</tag>
-         
-        <tag>Hexo</tag>
-         
-        <tag>NexT</tag>
-         
-         
-           
-             
-              <breadCrumb title="随笔" url="https://zonghongyan.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://zonghongyan.github.io/2016/08/01/201608061544/</loc>
-    <lastmod>2017-07-13T08:45:04.000Z</lastmod>
-    <data>
-        <display>
-        <title>iOS的消息推送简析</title>
-        <pubTime>2016-08-01T15:44:17.000Z</pubTime>
+        <title>哥的单例是伪的还是真的有图为证(Singleton)</title>
+        <pubTime>2016-06-13T15:44:17.000Z</pubTime>
         
         <tag>Objective-C</tag>
          
-        <tag>BadgeValue</tag>
+        <tag>Singleton</tag>
          
-        <tag>Notification</tag>
+        <tag>GCD</tag>
          
          
            
@@ -338,16 +336,18 @@
     
     
   <url>
-    <loc>https://zonghongyan.github.io/2016/10/13/201610131932/</loc>
+    <loc>https://zonghongyan.github.io/2016/12/23/201612230912/</loc>
     <lastmod>2017-07-13T08:45:04.000Z</lastmod>
     <data>
         <display>
-        <title>Swift和Objective-C混编的注意啦</title>
-        <pubTime>2016-10-13T11:32:32.000Z</pubTime>
+        <title>苹果APP接入HTTPS延迟截止时间是妥协吗</title>
+        <pubTime>2016-12-23T01:12:11.000Z</pubTime>
         
         <tag>Objective-C</tag>
          
-        <tag>Swift</tag>
+        <tag>HTTPS</tag>
+         
+        <tag>ATS</tag>
          
          
            

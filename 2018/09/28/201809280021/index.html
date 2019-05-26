@@ -81,7 +81,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="GitHub,Xcode,博客," />
+  <meta name="keywords" content="GitHub,博客,Xcode," />
 
 
 
@@ -97,22 +97,22 @@
 
 
 
-<meta name="description" content="原文：Xcode仿Cocoapods自动化锁定文件（locked file） 前言最近在做这样一个需求，打包项目时读取本地配置文件，根据配置文件的不同呈现不同版本或者模块，当然实际比以上描述更复杂些。由于软件的逻辑是基于配置文件来启动运行的，这时我们面临了一个问题，怎么防止同伴误操作配置文件？ 正文当然，解决这一类问题，有很多方案，比如，svn/git锁定该文件；再比如将配置文件作为一个私有pod">
-<meta name="keywords" content="GitHub,Xcode,博客">
+<meta name="description" content="原文：Xcode仿Cocoapods自动化锁定文件（locked file） 前言最近在做这样一个需求，打包项目时读取本地配置文件，根据配置文件的不同呈现不同版本或者模块，当然实际比以上描述更复杂些。由于软件的逻辑是基于配置文件来启动运行的，这时我们面临了一个问题，怎么防止同伴误操作配置文件？">
+<meta name="keywords" content="GitHub,博客,Xcode">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Xcode仿Cocoapods自动化锁定文件（locked file）">
 <meta property="og:url" content="https://zonghongyan.github.io/2018/09/28/201809280021/index.html">
 <meta property="og:site_name" content="仁伯安">
-<meta property="og:description" content="原文：Xcode仿Cocoapods自动化锁定文件（locked file） 前言最近在做这样一个需求，打包项目时读取本地配置文件，根据配置文件的不同呈现不同版本或者模块，当然实际比以上描述更复杂些。由于软件的逻辑是基于配置文件来启动运行的，这时我们面临了一个问题，怎么防止同伴误操作配置文件？ 正文当然，解决这一类问题，有很多方案，比如，svn/git锁定该文件；再比如将配置文件作为一个私有pod">
+<meta property="og:description" content="原文：Xcode仿Cocoapods自动化锁定文件（locked file） 前言最近在做这样一个需求，打包项目时读取本地配置文件，根据配置文件的不同呈现不同版本或者模块，当然实际比以上描述更复杂些。由于软件的逻辑是基于配置文件来启动运行的，这时我们面临了一个问题，怎么防止同伴误操作配置文件？">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/949086-0d089aed4155a2c3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/444">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/949086-55b6a31d10d46e40.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/444">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/949086-ddcd97fd6b9d9062.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/444">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/949086-799902889e884502.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/444">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/949086-4653773f70308456.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/444">
-<meta property="og:updated_time" content="2019-05-26T03:03:54.572Z">
+<meta property="og:updated_time" content="2019-05-26T03:14:06.703Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Xcode仿Cocoapods自动化锁定文件（locked file）">
-<meta name="twitter:description" content="原文：Xcode仿Cocoapods自动化锁定文件（locked file） 前言最近在做这样一个需求，打包项目时读取本地配置文件，根据配置文件的不同呈现不同版本或者模块，当然实际比以上描述更复杂些。由于软件的逻辑是基于配置文件来启动运行的，这时我们面临了一个问题，怎么防止同伴误操作配置文件？ 正文当然，解决这一类问题，有很多方案，比如，svn/git锁定该文件；再比如将配置文件作为一个私有pod">
+<meta name="twitter:description" content="原文：Xcode仿Cocoapods自动化锁定文件（locked file） 前言最近在做这样一个需求，打包项目时读取本地配置文件，根据配置文件的不同呈现不同版本或者模块，当然实际比以上描述更复杂些。由于软件的逻辑是基于配置文件来启动运行的，这时我们面临了一个问题，怎么防止同伴误操作配置文件？">
 <meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/949086-0d089aed4155a2c3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/444">
 
 
@@ -431,7 +431,7 @@
 
       
         <p>原文：<a href="https://www.jianshu.com/p/9da3e6304862" target="_blank" rel="external">Xcode仿Cocoapods自动化锁定文件（locked file）</a></p>
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最近在做这样一个需求，打包项目时读取本地配置文件，根据配置文件的不同呈现不同版本或者模块，当然实际比以上描述更复杂些。由于软件的逻辑是基于配置文件来启动运行的，这时我们面临了一个问题，怎么防止同伴误操作配置文件？</p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最近在做这样一个需求，打包项目时读取本地配置文件，根据配置文件的不同呈现不同版本或者模块，当然实际比以上描述更复杂些。由于软件的逻辑是基于配置文件来启动运行的，这时我们面临了一个问题，怎么防止同伴误操作配置文件？<a id="more"></a></p>
 <h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><p>当然，解决这一类问题，有很多方案，比如，svn/git锁定该文件；再比如将配置文件作为一个私有pods，让pods来实现锁定功能；<br><img src="https://upload-images.jianshu.io/upload_images/949086-0d089aed4155a2c3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/444" alt="Xcode locked file.png"><br>便于每次同伴误操作时会提醒；<br><img src="https://upload-images.jianshu.io/upload_images/949086-55b6a31d10d46e40.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/444" alt="Xcode locked file.png"></p>
 <p>以上的方式也还不错，但总觉得啰嗦，能不能我们自己在Xcode中锁定文件呢？<br>答案是肯定可以（不过锁定文件和Xcode没啥关系），所谓锁定，其实是修改文件的读写权限，将文件变为只读。你可以手动show in finder里，查看文件信息，修改为只读或者勾选锁定。这样的手动操作之后，在Xcode编辑的确有了解锁提示，但这样也只能算是画地为牢，对自己只读，同伴依旧可以修改。<br><img src="https://upload-images.jianshu.io/upload_images/949086-ddcd97fd6b9d9062.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/444" alt="image.png"></p>
 <p><img src="https://upload-images.jianshu.io/upload_images/949086-799902889e884502.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/444" alt="image.png"><br>那有没有什么自动化锁定文件的方法呢？其实我们只需在工程项目中添加执行脚本即可。</p>
@@ -471,9 +471,9 @@
           
             <a href="/tags/GitHub/" rel="tag"># GitHub</a>
           
-            <a href="/tags/Xcode/" rel="tag"># Xcode</a>
-          
             <a href="/tags/博客/" rel="tag"># 博客</a>
+          
+            <a href="/tags/Xcode/" rel="tag"># Xcode</a>
           
         </div>
       
