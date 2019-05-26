@@ -330,6 +330,354 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://zonghongyan.github.io/2018/09/28/201809280021/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="仁伯安">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/avatar-60.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="仁伯安">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/28/201809280021/" itemprop="url">Xcode仿Cocoapods自动化锁定文件（locked file）</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-28T00:21:21+08:00">
+                2018-09-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/随笔/" itemprop="url" rel="index">
+                    <span itemprop="name">随笔</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>原文：<a href="https://www.jianshu.com/p/9da3e6304862" target="_blank" rel="external">Xcode仿Cocoapods自动化锁定文件（locked file）</a></p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最近在做这样一个需求，打包项目时读取本地配置文件，根据配置文件的不同呈现不同版本或者模块，当然实际比以上描述更复杂些。由于软件的逻辑是基于配置文件来启动运行的，这时我们面临了一个问题，怎么防止同伴误操作配置文件？</p>
+<h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><p>当然，解决这一类问题，有很多方案，比如，svn/git锁定该文件；再比如将配置文件作为一个私有pods，让pods来实现锁定功能；<br><img src="https://upload-images.jianshu.io/upload_images/949086-0d089aed4155a2c3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/444" alt="Xcode locked file.png"><br>便于每次同伴误操作时会提醒；<br><img src="https://upload-images.jianshu.io/upload_images/949086-55b6a31d10d46e40.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/444" alt="Xcode locked file.png"></p>
+<p>以上的方式也还不错，但总觉得啰嗦，能不能我们自己在Xcode中锁定文件呢？<br>答案是肯定可以（不过锁定文件和Xcode没啥关系），所谓锁定，其实是修改文件的读写权限，将文件变为只读。你可以手动show in finder里，查看文件信息，修改为只读或者勾选锁定。这样的手动操作之后，在Xcode编辑的确有了解锁提示，但这样也只能算是画地为牢，对自己只读，同伴依旧可以修改。<br><img src="https://upload-images.jianshu.io/upload_images/949086-ddcd97fd6b9d9062.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/444" alt="image.png"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/949086-799902889e884502.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/444" alt="image.png"><br>那有没有什么自动化锁定文件的方法呢？其实我们只需在工程项目中添加执行脚本即可。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/949086-4653773f70308456.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/444" alt="屏幕快照 2018-09-28 16.17.18.png"><br>具体步骤，选择项目target，单击Build Phases，左上角加好，新建运行脚本，New Run Script Phase选项，然后在脚本填写如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"># Type a script or drag a script file from your workspace to insert its path.</div><div class="line"># A为父文件夹，B为子文件夹，C.file、D.file为目标文件</div><div class="line">cd $&#123;SRCROOT&#125;/A</div><div class="line">pushd B</div><div class="line">  echo &quot;A/B目录检索配置文件&quot;</div><div class="line">  for f in * ; do     </div><div class="line">    # 遍历文件</div><div class="line">    if [ &quot;$f&quot; == &quot;C.file&quot; ] || [ &quot;$f&quot; == &quot;D.file&quot; ]; then</div><div class="line">      echo &quot;❤️: 锁定 $f 文件🔐&quot;</div><div class="line">      chmod -R -w &quot;$f&quot; # 删除文件的写权限</div><div class="line">    fi</div><div class="line">  done</div><div class="line">popd</div><div class="line">#@author 仁伯安</div></pre></td></tr></table></figure>
+<p>书写完成后，编译项目，即可自动化锁定文件。</p>
+<h3 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h3><p>战战兢兢，如履薄冰，望再接再厉，<a href="https://github.com/zonghongyan" target="_blank" rel="external">仁伯安的GitHub</a>， <a href="https://zonghongyan.github.io/">仁伯安主页</a>，如果觉得有帮助，请不要吝啬点赞，<strong>O(∩_∩)O谢谢</strong>……</p>
+<p>本文已在版权印备案，如需转载请在版权印获取授权。<br><strong><a href="https://101705110006220.bqy.mobi" target="_blank" rel="external">获取版权</a></strong></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://zonghongyan.github.io/2018/06/29/201806292034/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="仁伯安">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/avatar-60.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="仁伯安">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/29/201806292034/" itemprop="url">基于Jenkins和fastlane的iOS持续集成与发布环境搭建</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-29T20:34:34+08:00">
+                2018-06-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/随笔/" itemprop="url" rel="index">
+                    <span itemprop="name">随笔</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>原文：<a href="https://www.jianshu.com/p/db5fe7fed9f3" target="_blank" rel="external">基于Jenkins和fastlane的iOS持续集成与发布环境搭建</a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><h2 id="Jenkins安装"><a href="#Jenkins安装" class="headerlink" title="Jenkins安装"></a>Jenkins安装</h2><p>Jenkins是一个开源软件项目，是基于Java开发的一种<a href="https://baike.baidu.com/item/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90" target="_blank" rel="external">持续集成</a>工具，用于监控持续重复的工作，旨在提供一个开放易用的软件平台，使软件的持续集成变成可能。 </p>
+<p><a href="http://jenkins.io/download/" target="_blank" rel="external">Jenkins下载地址</a><br>选择Mac os X<br>下载好，一步一步安装即可。<br><img src="https://upload-images.jianshu.io/upload_images/949086-90181e6d5acf817e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="安装成功.png"></p>
+<p>安装成功后，直接在浏览器中输入：<a href="http://localhost:8080/" target="_blank" rel="external">http://localhost:8080/</a> ，打开jenkins；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">http://localhost:8080/exit            // 退出Jenkins</div><div class="line">http://localhost:8080/restart       // 重启Jenkins，一般装了插件重启下</div><div class="line">http://localhost:8080/reload       // 重新加载Jenkins</div></pre></td></tr></table></figure></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/949086-ff9b375af5ddc74d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="解锁Jenkins.png"></p>
+<p>找到<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">或者如下图，执行```sudo cat /Users/Shared/Jenkins/Home/secrets/initialAdminPassword```，将输出的密码拷贝纸页面密码区域；</div><div class="line"></div><div class="line">![解锁Jenkins-initialAdminPassword.png](https://upload-images.jianshu.io/upload_images/949086-67a99a991002c170.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">![解锁Jenkins-密码拷贝.png](https://upload-images.jianshu.io/upload_images/949086-cc407d5721a3b31a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">![自定义安装.png](https://upload-images.jianshu.io/upload_images/949086-58f181439c951fe0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">![下一步安装.png](https://upload-images.jianshu.io/upload_images/949086-6c58047ee1187ad6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">![创建管理员.png](https://upload-images.jianshu.io/upload_images/949086-99808012363b5841.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">![instace config.png](https://upload-images.jianshu.io/upload_images/949086-86d1bac2519bdd53.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line">![start jenkins.png](https://upload-images.jianshu.io/upload_images/949086-d69276d9a61a8cac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">![安装完成.png](https://upload-images.jianshu.io/upload_images/949086-7cacaec4f6dc40c4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">#### 插件安装</div><div class="line">在系统管理--&gt;管理插件，添加如下插件：</div><div class="line">![image.png](http://upload-images.jianshu.io/upload_images/949086-a2c63f505cbcd640.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">[Xcode integration](https://wiki.jenkins-ci.org/display/JENKINS/Xcode+Plugin)</div><div class="line">[Git plugin](http://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin)</div><div class="line">[GitHub plugin](http://wiki.jenkins-ci.org/display/JENKINS/Github+Plugin)</div><div class="line">[PostBuildScript Plugin](http://wiki.jenkins-ci.org/display/JENKINS/PostBuildScript+Plugin)</div><div class="line"></div><div class="line">注意：</div><div class="line">记得安装环境变量注入插件，然后在配置工程时，构建-&gt;增加构建步骤-&gt;引入如下路径；</div></pre></td></tr></table></figure></p>
+<p>PATH=$PATH:/usr/local/bin</p>
+<h1 id="包括pod、fastlane、git等shell的执行，都依靠这个路径"><a href="#包括pod、fastlane、git等shell的执行，都依靠这个路径" class="headerlink" title="包括pod、fastlane、git等shell的执行，都依靠这个路径"></a>包括pod、fastlane、git等shell的执行，都依靠这个路径</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">[Environment Injector Plugin](https://wiki.jenkins-ci.org/display/JENKINS/EnvInject+Plugin) // 环境变量注入</div><div class="line">![Inject environment variables.png](https://upload-images.jianshu.io/upload_images/949086-5c76f163b88f195b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">![fastlane指令.png](https://upload-images.jianshu.io/upload_images/949086-c672aec0522f56de.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line"></div><div class="line">## fastlane 安装</div><div class="line"></div><div class="line">[fastlane工具](https://fastlane.tools)</div><div class="line">1、Xcode 命令行安装</div></pre></td></tr></table></figure>
+<p>xcode-select –install<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">如果输出如下，表示已经安装</div><div class="line">![Xcode-select.png](https://upload-images.jianshu.io/upload_images/949086-f4b1521e56153c49.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">2、fastlane安装</div></pre></td></tr></table></figure></p>
+<p>sudo gem install fastlane // 安装fastlane<br>fastlane -v // 查看安装版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">如果报错</div></pre></td></tr></table></figure></p>
+<p>ERROR:  While executing gem … (Gem::FilePermissionError)<br>You don’t have write permissions for the /usr/bin directory.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">请使用</div></pre></td></tr></table></figure></p>
+<p>sudo gem install -n /usr/local/bin/ fastlane</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">### 新建Item</div><div class="line">![新建Item.png](http://upload-images.jianshu.io/upload_images/949086-07d2802cd1d66c63.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">![create Item.png](http://upload-images.jianshu.io/upload_images/949086-e4805bb6531af2ef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">![iOS_test.png](http://upload-images.jianshu.io/upload_images/949086-198b277ab1f8c9b3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">![workspace path.png](http://upload-images.jianshu.io/upload_images/949086-731fffffa4f7b81a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div></pre></td></tr></table></figure>
+<p>/Users/developer/.jenkins/jobs/iOS_Test/workspace/项目工程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">### Jenkins通用配置</div><div class="line"></div><div class="line">#### 注意点：</div><div class="line">1、Keychains</div><div class="line">获取Jenkins对钥匙串的访问权限</div></pre></td></tr></table></figure></p>
+<p>~/Library/Keychains/login.keychain 或者login.keychain-db<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">2、Provisioning Profiles</div><div class="line">将描述文件拷贝到</div></pre></td></tr></table></figure></p>
+<p>~/Library/MobileDevice/Provisioning Profiles/<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">将以上文件分别拷贝到</div></pre></td></tr></table></figure></p>
+<p>/Users/Shared/Jenkins/Library/Keychains/</p>
+<p>/Users/Shared/Jenkins/Library/MobileDevice/Provisioning Profiles/<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">3、证书权限</div></pre></td></tr></table></figure></p>
+<p>钥匙串-&gt; 登录 -&gt; 我的证书<br>找到对应证书，展开-选中私钥，双击，访问控制，允许所有应用程序访问此项目，右下角，存储更改。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">### fastlane配置</div><div class="line">1、进入工程主目录</div></pre></td></tr></table></figure></p>
+<p>fastlane init<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">2、查看Appfile文件</div></pre></td></tr></table></figure></p>
+<p>app_identifier(“com.XX.XX”) # The bundle identifier of your app<br>apple_id(“renboan@liyun.com”) # Your Apple email address</p>
+<h1 id="For-more-information-about-the-Appfile-see"><a href="#For-more-information-about-the-Appfile-see" class="headerlink" title="For more information about the Appfile, see:"></a>For more information about the Appfile, see:</h1><h1 id="https-docs-fastlane-tools-advanced-appfile"><a href="#https-docs-fastlane-tools-advanced-appfile" class="headerlink" title="https://docs.fastlane.tools/advanced/#appfile"></a><a href="https://docs.fastlane.tools/advanced/#appfile" target="_blank" rel="external">https://docs.fastlane.tools/advanced/#appfile</a></h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">3、配置Fastfile文件</div></pre></td></tr></table></figure>
+<h1 id="This-file-contains-the-fastlane-tools-configuration"><a href="#This-file-contains-the-fastlane-tools-configuration" class="headerlink" title="This file contains the fastlane.tools configuration"></a>This file contains the fastlane.tools configuration</h1><h1 id="You-can-find-the-documentation-at-https-docs-fastlane-tools"><a href="#You-can-find-the-documentation-at-https-docs-fastlane-tools" class="headerlink" title="You can find the documentation at https://docs.fastlane.tools"></a>You can find the documentation at <a href="https://docs.fastlane.tools" target="_blank" rel="external">https://docs.fastlane.tools</a></h1><p>#</p>
+<h1 id="For-a-list-of-all-available-actions-check-out"><a href="#For-a-list-of-all-available-actions-check-out" class="headerlink" title="For a list of all available actions, check out"></a>For a list of all available actions, check out</h1><p>#</p>
+<h1 id="https-docs-fastlane-tools-actions"><a href="#https-docs-fastlane-tools-actions" class="headerlink" title="https://docs.fastlane.tools/actions"></a><a href="https://docs.fastlane.tools/actions" target="_blank" rel="external">https://docs.fastlane.tools/actions</a></h1><p>#</p>
+<h1 id="For-a-list-of-all-available-plugins-check-out"><a href="#For-a-list-of-all-available-plugins-check-out" class="headerlink" title="For a list of all available plugins, check out"></a>For a list of all available plugins, check out</h1><p>#</p>
+<h1 id="https-docs-fastlane-tools-plugins-available-plugins"><a href="#https-docs-fastlane-tools-plugins-available-plugins" class="headerlink" title="https://docs.fastlane.tools/plugins/available-plugins"></a><a href="https://docs.fastlane.tools/plugins/available-plugins" target="_blank" rel="external">https://docs.fastlane.tools/plugins/available-plugins</a></h1><p>#</p>
+<h1 id="Uncomment-the-line-if-you-want-fastlane-to-automatically-update-itself"><a href="#Uncomment-the-line-if-you-want-fastlane-to-automatically-update-itself" class="headerlink" title="Uncomment the line if you want fastlane to automatically update itself"></a>Uncomment the line if you want fastlane to automatically update itself</h1><h1 id="update-fastlane"><a href="#update-fastlane" class="headerlink" title="update_fastlane"></a>update_fastlane</h1><h1 id="平台，安卓还是iOS"><a href="#平台，安卓还是iOS" class="headerlink" title="平台，安卓还是iOS"></a>平台，安卓还是iOS</h1><p>default_platform(:ios) </p>
+<h1 id="iOS进行的操作"><a href="#iOS进行的操作" class="headerlink" title="iOS进行的操作"></a>iOS进行的操作</h1><p>platform :ios do<br>desc “企业版”</p>
+<h1 id="在执行lane之前进行的操作，例如我们在每次打包之前都执行一次pod-install"><a href="#在执行lane之前进行的操作，例如我们在每次打包之前都执行一次pod-install" class="headerlink" title="在执行lane之前进行的操作，例如我们在每次打包之前都执行一次pod install"></a>在执行lane之前进行的操作，例如我们在每次打包之前都执行一次pod install</h1><p>#before_all do</p>
+<h1 id="faselane中pod-install的操作"><a href="#faselane中pod-install的操作" class="headerlink" title="faselane中pod install的操作"></a>faselane中pod install的操作</h1><p>#cocoapods</p>
+<p>#end</p>
+<h1 id="打包的lane操作，我们可以配置多个lane来打不同环境的包"><a href="#打包的lane操作，我们可以配置多个lane来打不同环境的包" class="headerlink" title="打包的lane操作，我们可以配置多个lane来打不同环境的包"></a>打包的lane操作，我们可以配置多个lane来打不同环境的包</h1><p>lane :enterprise do |op|</p>
+<h1 id="打包之前跟新指定配置的描述文件"><a href="#打包之前跟新指定配置的描述文件" class="headerlink" title="打包之前跟新指定配置的描述文件"></a>打包之前跟新指定配置的描述文件</h1><p>update_project_provisioning(</p>
+<h1 id="之前有sigh下载的描述文件存储路径"><a href="#之前有sigh下载的描述文件存储路径" class="headerlink" title="之前有sigh下载的描述文件存储路径"></a>之前有sigh下载的描述文件存储路径</h1><p>profile:”./XXXXDis.mobileprovision”,</p>
+<h1 id="打包配置，Debug，Release"><a href="#打包配置，Debug，Release" class="headerlink" title="打包配置，Debug，Release"></a>打包配置，Debug，Release</h1><p>build_configuration:”Debug”<br>)</p>
+<p>automatic_code_signing(</p>
+<h1 id="工程文件所在路径"><a href="#工程文件所在路径" class="headerlink" title="工程文件所在路径"></a>工程文件所在路径</h1><p>path:”ProjectName.xcodeproj”,</p>
+<h1 id="是否使用自动签名，这里如果是打包的话应该一般都为false吧，默认也是false"><a href="#是否使用自动签名，这里如果是打包的话应该一般都为false吧，默认也是false" class="headerlink" title="是否使用自动签名，这里如果是打包的话应该一般都为false吧，默认也是false"></a>是否使用自动签名，这里如果是打包的话应该一般都为false吧，默认也是false</h1><p>use_automatic_signing:false,</p>
+<h1 id="打包的team-ID，-也就是打包使用的证书中的team-ID，这个如果不知道是什么的话可以在xCode中设置好签名用的描述文件后到xcodeproj下的pbxproj文件中搜索“DEVELOPMENT-TEAM”，它的值就是了"><a href="#打包的team-ID，-也就是打包使用的证书中的team-ID，这个如果不知道是什么的话可以在xCode中设置好签名用的描述文件后到xcodeproj下的pbxproj文件中搜索“DEVELOPMENT-TEAM”，它的值就是了" class="headerlink" title="打包的team ID， 也就是打包使用的证书中的team ID，这个如果不知道是什么的话可以在xCode中设置好签名用的描述文件后到xcodeproj下的pbxproj文件中搜索“DEVELOPMENT_TEAM”，它的值就是了"></a>打包的team ID， 也就是打包使用的证书中的team ID，这个如果不知道是什么的话可以在xCode中设置好签名用的描述文件后到xcodeproj下的pbxproj文件中搜索“DEVELOPMENT_TEAM”，它的值就是了</h1><p>team_id:”XXXX”,</p>
+<h1 id="这个就不用说了，需要修改的targets"><a href="#这个就不用说了，需要修改的targets" class="headerlink" title="这个就不用说了，需要修改的targets"></a>这个就不用说了，需要修改的targets</h1><p>targets:”ProjectName”,</p>
+<h1 id="用哪种方式打包“iPhone-Develop”还是“iPhone-Distribution”"><a href="#用哪种方式打包“iPhone-Develop”还是“iPhone-Distribution”" class="headerlink" title="用哪种方式打包“iPhone Develop”还是“iPhone Distribution”"></a>用哪种方式打包“iPhone Develop”还是“iPhone Distribution”</h1><p>code_sign_identity:”iPhone Distribution”,</p>
+<h1 id="描述文件名称，-也就是使用哪个描述文件打包"><a href="#描述文件名称，-也就是使用哪个描述文件打包" class="headerlink" title="描述文件名称， 也就是使用哪个描述文件打包"></a>描述文件名称， 也就是使用哪个描述文件打包</h1><p>profile_name:”XXXXDis”<br>)</p>
+<p>currentTime = Time.new.strftime(“%Y-%m-%d-%H-%M”)<br>outputDirectory = “./build/#{currentTime}”<br>logDirectory = “#{outputDirectory}/fastlanelog”</p>
+<p>gym(</p>
+<h1 id="打包方式，enterprise-adhoc-appstore-development"><a href="#打包方式，enterprise-adhoc-appstore-development" class="headerlink" title="打包方式，enterprise, adhoc,appstore,development"></a>打包方式，enterprise, adhoc,appstore,development</h1><p>export_method: “enterprise”,<br>scheme: “ProjectName”,</p>
+<h1 id="pod-生成的workspace文件"><a href="#pod-生成的workspace文件" class="headerlink" title="pod 生成的workspace文件"></a>pod 生成的workspace文件</h1><p>workspace:”ProjectName.xcworkspace”,</p>
+<h1 id="输出文件夹"><a href="#输出文件夹" class="headerlink" title="输出文件夹"></a>输出文件夹</h1><p>output_directory: outputDirectory,</p>
+<h1 id="输出包名称"><a href="#输出包名称" class="headerlink" title="输出包名称"></a>输出包名称</h1><p>output_name:”ProjectName.ipa”,</p>
+<h1 id="打包前是否clean"><a href="#打包前是否clean" class="headerlink" title="打包前是否clean"></a>打包前是否clean</h1><p>clean:true,<br>silent:true,</p>
+<h1 id="打包的配置-Debug-Release"><a href="#打包的配置-Debug-Release" class="headerlink" title="打包的配置 Debug Release"></a>打包的配置 Debug Release</h1><p>configuration:”Debug”,</p>
+<h1 id="打包日志输出文件夹"><a href="#打包日志输出文件夹" class="headerlink" title="打包日志输出文件夹"></a>打包日志输出文件夹</h1><p>buildlog_path:logDirectory,</p>
+<h1 id="打包证书"><a href="#打包证书" class="headerlink" title="打包证书"></a>打包证书</h1><p>codesigning_identity:’iPhone Distribution: XXXXXXXXXXXX TECHNOLOGY CO.,LTD.’,</p>
+<h1 id="Xcode-9-默认不允许访问钥匙串的内容-必须要设置此项才可以，运行过程可能会提示是否允许访问钥匙串，需要输入电脑密码"><a href="#Xcode-9-默认不允许访问钥匙串的内容-必须要设置此项才可以，运行过程可能会提示是否允许访问钥匙串，需要输入电脑密码" class="headerlink" title="Xcode 9 默认不允许访问钥匙串的内容,必须要设置此项才可以，运行过程可能会提示是否允许访问钥匙串，需要输入电脑密码"></a>Xcode 9 默认不允许访问钥匙串的内容,必须要设置此项才可以，运行过程可能会提示是否允许访问钥匙串，需要输入电脑密码</h1><p>export_xcargs: “-allowProvisioningUpdates”,</p>
+<h1 id="导出选项"><a href="#导出选项" class="headerlink" title="导出选项"></a>导出选项</h1><p>export_options:{</p>
+<h1 id="打包导出时可选描述文件-“bundleID”-gt-”描述文件名称”"><a href="#打包导出时可选描述文件-“bundleID”-gt-”描述文件名称”" class="headerlink" title="打包导出时可选描述文件 “bundleID”=&gt;”描述文件名称”"></a>打包导出时可选描述文件 “bundleID”=&gt;”描述文件名称”</h1><p>provisioningProfiles: {<br>“com.XXXX.XXXX” =&gt; “XXXXDis.mobileprovision”,<br>},<br>}<br>)<br>archive_path=”Published succeed:/XXXXXXXXXXXX/build/#{currentTime}/ProjectName.ipa”<br>puts “#{archive_path}”<br>end</p>
+<h1 id="当lane执行完成之后进行哪些操作"><a href="#当lane执行完成之后进行哪些操作" class="headerlink" title="当lane执行完成之后进行哪些操作"></a>当lane执行完成之后进行哪些操作</h1><p>after_all do |lane|</p>
+<p>end</p>
+<p>error do |lane, exception|<br>end</p>
+<p>end</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">4、命令行执行打包</div></pre></td></tr></table></figure>
+<p>fastlane ios enterprise<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">### Jenkins配置</div><div class="line"></div><div class="line">##### 1、shell语句</div></pre></td></tr></table></figure></p>
+<p>export LANG=”en_US.UTF-8”<br>pwd<br>cd $WORKSPACE/ProjectName</p>
+<p>fastlane ios enterprise<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">##### 2、Set build description</div><div class="line"></div><div class="line">![Set build description.png](https://upload-images.jianshu.io/upload_images/949086-7a7ac164fd367fb3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div></pre></td></tr></table></figure></p>
+<p>Published succeed:(.*)</p>
+<p><a href="http://XX.XX.XX.XX:8080/job/${JOB_NAME}/ws\1" target="_blank" rel="external">单击ipa包下载</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Regular expression：Published succeed:(.*) // 这里这样写，是因为fastlane文件中输出了以Published succeed:为前缀的一个地址；</div></pre></td></tr></table></figure></p>
+<p>archive_path=”Published succeed:/XXXXXXXXXXXX/build/#{currentTime}/ProjectName.ipa”<br>puts “#{archive_path}”<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">Description：构建后的描述中的```\1```的意思是获取正则表达式获取的内容。</div><div class="line">##### 3、邮件通知</div><div class="line">首先将系统管理员邮箱（你用来发邮件的邮箱）smtp服务打开，拿126邮箱举例，打开邮箱，进入设置，进入POP3/SMTP/IMAP设置，打开如下图几个选项。</div><div class="line">![image.png](https://upload-images.jianshu.io/upload_images/949086-af0ed2f213f7c230.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line">然后，在Jenkins，添加系统管理员邮箱及SMTP服务器，具体步骤是，进入Jenkins的系统管理--&gt;系统设置，找到Jenkins Location，填写系统管理员邮件地址；</div><div class="line">![image.png](https://upload-images.jianshu.io/upload_images/949086-25c47d155c2ead19.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">添加SMTP服务器地址，126邮箱的是smtp.126.com，填写管理员邮箱及密码。</div><div class="line">![image.png](https://upload-images.jianshu.io/upload_images/949086-972342ab6dad517d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">最后，在项目配置中，构建后操作项，添加收取邮件的邮箱，多个邮箱用空格隔开。</div><div class="line">![image.png](https://upload-images.jianshu.io/upload_images/949086-838b145fcc58e12a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line">设置完成后，在构建历史区域可以直接下载打包的ipa包。</div><div class="line">![image.png](https://upload-images.jianshu.io/upload_images/949086-aa38f2a70ea40cfa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">- Jenkins启动</div></pre></td></tr></table></figure></p>
+<p>sudo launchctl load /Library/LaunchDaemons/org.jenkins-ci.plist<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- 停止运行Jenkins</div></pre></td></tr></table></figure></p>
+<p>sudo launchctl unload /Library/LaunchDaemons/org.jenkins-ci.plist<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">- 找回密码</div><div class="line"></div><div class="line">找到config.xml文件</div></pre></td></tr></table></figure></p>
+<p>/Users/Shared/Jenkins/Home/users/admin/config.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">文件中找到，fullName为用户名：```admin```，passwordHash为加密的密码：```111111</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;fullName&gt;admin&lt;/fullName&gt;</div><div class="line">&lt;passwordHash&gt;#jbcrypt:$2a$10$DdaWzN64JgUtLdvxWIflcuQu2fgrrMSAMabF5TSrGK5nXitqK9ZMS&lt;/passwordHash&gt;</div></pre></td></tr></table></figure>
+<p>本文已在版权印备案，如需转载请在版权印获取授权。<br><strong><a href="https://101705110006220.bqy.mobi" target="_blank" rel="external">获取版权</a></strong></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://zonghongyan.github.io/2017/06/29/201706292034/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1447,285 +1795,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://zonghongyan.github.io/2016/10/19/201610191550/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="仁伯安">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/avatar-60.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="仁伯安">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/10/19/201610191550/" itemprop="url">iOS指纹识别登录流程及实现</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-19T15:50:03+08:00">
-                2016-10-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS进阶篇/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS进阶篇</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>原文：<a href="http://www.jianshu.com/p/67fd93408517" target="_blank" rel="external">iOS指纹识别登录流程及实现</a></p>
-<p><img src="http://upload-images.jianshu.io/upload_images/949086-e7042f7dcab839f5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/250" alt="指纹.png"></p>
-<h3 id="闲谈"><a href="#闲谈" class="headerlink" title="闲谈"></a>闲谈</h3><p>最近一直在追青云志，总觉得电视剧没有小说来的精彩。是的，大咖们演技堪称惊艳，剧情改编也很紧凑，但不得不说很多东西单靠演是达不到的，主人公每一刻的内心也只能在小说中才能看的贴切（为了装X，哥不惜二百两买了一沓正版典藏版）。
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/10/19/201610191550/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://zonghongyan.github.io/2016/10/13/201610131932/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="仁伯安">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar/avatar-60.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="仁伯安">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/10/13/201610131932/" itemprop="url">Swift和Objective-C混编的注意啦</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-13T19:32:32+08:00">
-                2016-10-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS网络篇/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS网络篇</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>原文：<a href="http://www.jianshu.com/p/2ed48b954612" target="_blank" rel="external">Swift和Objective-C混编的注意啦</a></p>
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>Swift已推出数年，与Objective-C相比Swift的语言机制及使用简易程度上更接地气，大大降低了iOS入门门槛。当然这对新入行的童鞋们来讲，的确算是福音，但对于整个iOS编程从业者来讲，真真是，曾几何时“高大上”，转瞬之间“矮矬穷”。再加上培训班横行，批量批发之下，iOS再也看不到当年的辉煌。<br><img src="http://upload-images.jianshu.io/upload_images/949086-4009987e29482a25.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Swift.png"><br>往事不再提，事还是要做滴。iOS10推出后，紧跟着Xcode8也推送了更新，细心者会发现，Xcode8下iOS版本最低适配已变为iOS8.0，加上Swift版本趋于稳定，从某种意义上讲，Swift的时代正式开启，替代Objective-C怕也只是时间问题。当然，在这之前，我们也应做好准备。今年越来的越多的公司，也开始了Swift和Objective-C混编。
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/10/13/201610131932/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1775,7 +1844,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1797,7 +1866,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1894,7 +1963,7 @@
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

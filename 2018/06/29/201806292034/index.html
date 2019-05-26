@@ -1,0 +1,1294 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="-kiDoxWZ_ezIUVBSVQQF1juVwZygZ3eS9BM-D33eE34" />
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="IgvSdkD53Z" />
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="GitHub,博客,Jenkins,fastlane," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="原文：基于Jenkins和fastlane的iOS持续集成与发布环境搭建 前言Jenkins安装Jenkins是一个开源软件项目，是基于Java开发的一种持续集成工具，用于监控持续重复的工作，旨在提供一个开放易用的软件平台，使软件的持续集成变成可能。  Jenkins下载地址选择Mac os X下载好，一步一步安装即可。 安装成功后，直接在浏览器中输入：http://localhost:8080/">
+<meta name="keywords" content="GitHub,博客,Jenkins,fastlane">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于Jenkins和fastlane的iOS持续集成与发布环境搭建">
+<meta property="og:url" content="https://zonghongyan.github.io/2018/06/29/201806292034/index.html">
+<meta property="og:site_name" content="仁伯安">
+<meta property="og:description" content="原文：基于Jenkins和fastlane的iOS持续集成与发布环境搭建 前言Jenkins安装Jenkins是一个开源软件项目，是基于Java开发的一种持续集成工具，用于监控持续重复的工作，旨在提供一个开放易用的软件平台，使软件的持续集成变成可能。  Jenkins下载地址选择Mac os X下载好，一步一步安装即可。 安装成功后，直接在浏览器中输入：http://localhost:8080/">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/949086-90181e6d5acf817e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/949086-ff9b375af5ddc74d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2019-05-26T03:00:56.673Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于Jenkins和fastlane的iOS持续集成与发布环境搭建">
+<meta name="twitter:description" content="原文：基于Jenkins和fastlane的iOS持续集成与发布环境搭建 前言Jenkins安装Jenkins是一个开源软件项目，是基于Java开发的一种持续集成工具，用于监控持续重复的工作，旨在提供一个开放易用的软件平台，使软件的持续集成变成可能。  Jenkins下载地址选择Mac os X下载好，一步一步安装即可。 安装成功后，直接在浏览器中输入：http://localhost:8080/">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/949086-90181e6d5acf817e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 'undefined',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zonghongyan.github.io/2018/06/29/201806292034/"/>
+
+
+
+
+
+  <title>基于Jenkins和fastlane的iOS持续集成与发布环境搭建 | 仁伯安</title>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=60821256";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">仁伯安</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">摒弃诱惑，否极泰来(Get rid of the temptation,After a storm comes a calm)</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://zonghongyan.github.io/2018/06/29/201806292034/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="仁伯安">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar/avatar-60.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="仁伯安">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">基于Jenkins和fastlane的iOS持续集成与发布环境搭建</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-29T20:34:34+08:00">
+                2018-06-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/随笔/" itemprop="url" rel="index">
+                    <span itemprop="name">随笔</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>原文：<a href="https://www.jianshu.com/p/db5fe7fed9f3" target="_blank" rel="external">基于Jenkins和fastlane的iOS持续集成与发布环境搭建</a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><h2 id="Jenkins安装"><a href="#Jenkins安装" class="headerlink" title="Jenkins安装"></a>Jenkins安装</h2><p>Jenkins是一个开源软件项目，是基于Java开发的一种<a href="https://baike.baidu.com/item/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90" target="_blank" rel="external">持续集成</a>工具，用于监控持续重复的工作，旨在提供一个开放易用的软件平台，使软件的持续集成变成可能。 </p>
+<p><a href="http://jenkins.io/download/" target="_blank" rel="external">Jenkins下载地址</a><br>选择Mac os X<br>下载好，一步一步安装即可。<br><img src="https://upload-images.jianshu.io/upload_images/949086-90181e6d5acf817e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="安装成功.png"></p>
+<p>安装成功后，直接在浏览器中输入：<a href="http://localhost:8080/" target="_blank" rel="external">http://localhost:8080/</a> ，打开jenkins；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">http://localhost:8080/exit            // 退出Jenkins</div><div class="line">http://localhost:8080/restart       // 重启Jenkins，一般装了插件重启下</div><div class="line">http://localhost:8080/reload       // 重新加载Jenkins</div></pre></td></tr></table></figure></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/949086-ff9b375af5ddc74d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="解锁Jenkins.png"></p>
+<p>找到<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">或者如下图，执行```sudo cat /Users/Shared/Jenkins/Home/secrets/initialAdminPassword```，将输出的密码拷贝纸页面密码区域；</div><div class="line"></div><div class="line">![解锁Jenkins-initialAdminPassword.png](https://upload-images.jianshu.io/upload_images/949086-67a99a991002c170.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">![解锁Jenkins-密码拷贝.png](https://upload-images.jianshu.io/upload_images/949086-cc407d5721a3b31a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">![自定义安装.png](https://upload-images.jianshu.io/upload_images/949086-58f181439c951fe0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">![下一步安装.png](https://upload-images.jianshu.io/upload_images/949086-6c58047ee1187ad6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">![创建管理员.png](https://upload-images.jianshu.io/upload_images/949086-99808012363b5841.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">![instace config.png](https://upload-images.jianshu.io/upload_images/949086-86d1bac2519bdd53.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line">![start jenkins.png](https://upload-images.jianshu.io/upload_images/949086-d69276d9a61a8cac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">![安装完成.png](https://upload-images.jianshu.io/upload_images/949086-7cacaec4f6dc40c4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">#### 插件安装</div><div class="line">在系统管理--&gt;管理插件，添加如下插件：</div><div class="line">![image.png](http://upload-images.jianshu.io/upload_images/949086-a2c63f505cbcd640.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">[Xcode integration](https://wiki.jenkins-ci.org/display/JENKINS/Xcode+Plugin)</div><div class="line">[Git plugin](http://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin)</div><div class="line">[GitHub plugin](http://wiki.jenkins-ci.org/display/JENKINS/Github+Plugin)</div><div class="line">[PostBuildScript Plugin](http://wiki.jenkins-ci.org/display/JENKINS/PostBuildScript+Plugin)</div><div class="line"></div><div class="line">注意：</div><div class="line">记得安装环境变量注入插件，然后在配置工程时，构建-&gt;增加构建步骤-&gt;引入如下路径；</div></pre></td></tr></table></figure></p>
+<p>PATH=$PATH:/usr/local/bin</p>
+<h1 id="包括pod、fastlane、git等shell的执行，都依靠这个路径"><a href="#包括pod、fastlane、git等shell的执行，都依靠这个路径" class="headerlink" title="包括pod、fastlane、git等shell的执行，都依靠这个路径"></a>包括pod、fastlane、git等shell的执行，都依靠这个路径</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">[Environment Injector Plugin](https://wiki.jenkins-ci.org/display/JENKINS/EnvInject+Plugin) // 环境变量注入</div><div class="line">![Inject environment variables.png](https://upload-images.jianshu.io/upload_images/949086-5c76f163b88f195b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">![fastlane指令.png](https://upload-images.jianshu.io/upload_images/949086-c672aec0522f56de.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line"></div><div class="line">## fastlane 安装</div><div class="line"></div><div class="line">[fastlane工具](https://fastlane.tools)</div><div class="line">1、Xcode 命令行安装</div></pre></td></tr></table></figure>
+<p>xcode-select –install<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">如果输出如下，表示已经安装</div><div class="line">![Xcode-select.png](https://upload-images.jianshu.io/upload_images/949086-f4b1521e56153c49.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">2、fastlane安装</div></pre></td></tr></table></figure></p>
+<p>sudo gem install fastlane // 安装fastlane<br>fastlane -v // 查看安装版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">如果报错</div></pre></td></tr></table></figure></p>
+<p>ERROR:  While executing gem … (Gem::FilePermissionError)<br>You don’t have write permissions for the /usr/bin directory.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">请使用</div></pre></td></tr></table></figure></p>
+<p>sudo gem install -n /usr/local/bin/ fastlane</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">### 新建Item</div><div class="line">![新建Item.png](http://upload-images.jianshu.io/upload_images/949086-07d2802cd1d66c63.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">![create Item.png](http://upload-images.jianshu.io/upload_images/949086-e4805bb6531af2ef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">![iOS_test.png](http://upload-images.jianshu.io/upload_images/949086-198b277ab1f8c9b3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">![workspace path.png](http://upload-images.jianshu.io/upload_images/949086-731fffffa4f7b81a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div></pre></td></tr></table></figure>
+<p>/Users/developer/.jenkins/jobs/iOS_Test/workspace/项目工程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">### Jenkins通用配置</div><div class="line"></div><div class="line">#### 注意点：</div><div class="line">1、Keychains</div><div class="line">获取Jenkins对钥匙串的访问权限</div></pre></td></tr></table></figure></p>
+<p>~/Library/Keychains/login.keychain 或者login.keychain-db<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">2、Provisioning Profiles</div><div class="line">将描述文件拷贝到</div></pre></td></tr></table></figure></p>
+<p>~/Library/MobileDevice/Provisioning Profiles/<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">将以上文件分别拷贝到</div></pre></td></tr></table></figure></p>
+<p>/Users/Shared/Jenkins/Library/Keychains/</p>
+<p>/Users/Shared/Jenkins/Library/MobileDevice/Provisioning Profiles/<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">3、证书权限</div></pre></td></tr></table></figure></p>
+<p>钥匙串-&gt; 登录 -&gt; 我的证书<br>找到对应证书，展开-选中私钥，双击，访问控制，允许所有应用程序访问此项目，右下角，存储更改。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">### fastlane配置</div><div class="line">1、进入工程主目录</div></pre></td></tr></table></figure></p>
+<p>fastlane init<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">2、查看Appfile文件</div></pre></td></tr></table></figure></p>
+<p>app_identifier(“com.XX.XX”) # The bundle identifier of your app<br>apple_id(“renboan@liyun.com”) # Your Apple email address</p>
+<h1 id="For-more-information-about-the-Appfile-see"><a href="#For-more-information-about-the-Appfile-see" class="headerlink" title="For more information about the Appfile, see:"></a>For more information about the Appfile, see:</h1><h1 id="https-docs-fastlane-tools-advanced-appfile"><a href="#https-docs-fastlane-tools-advanced-appfile" class="headerlink" title="https://docs.fastlane.tools/advanced/#appfile"></a><a href="https://docs.fastlane.tools/advanced/#appfile" target="_blank" rel="external">https://docs.fastlane.tools/advanced/#appfile</a></h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">3、配置Fastfile文件</div></pre></td></tr></table></figure>
+<h1 id="This-file-contains-the-fastlane-tools-configuration"><a href="#This-file-contains-the-fastlane-tools-configuration" class="headerlink" title="This file contains the fastlane.tools configuration"></a>This file contains the fastlane.tools configuration</h1><h1 id="You-can-find-the-documentation-at-https-docs-fastlane-tools"><a href="#You-can-find-the-documentation-at-https-docs-fastlane-tools" class="headerlink" title="You can find the documentation at https://docs.fastlane.tools"></a>You can find the documentation at <a href="https://docs.fastlane.tools" target="_blank" rel="external">https://docs.fastlane.tools</a></h1><p>#</p>
+<h1 id="For-a-list-of-all-available-actions-check-out"><a href="#For-a-list-of-all-available-actions-check-out" class="headerlink" title="For a list of all available actions, check out"></a>For a list of all available actions, check out</h1><p>#</p>
+<h1 id="https-docs-fastlane-tools-actions"><a href="#https-docs-fastlane-tools-actions" class="headerlink" title="https://docs.fastlane.tools/actions"></a><a href="https://docs.fastlane.tools/actions" target="_blank" rel="external">https://docs.fastlane.tools/actions</a></h1><p>#</p>
+<h1 id="For-a-list-of-all-available-plugins-check-out"><a href="#For-a-list-of-all-available-plugins-check-out" class="headerlink" title="For a list of all available plugins, check out"></a>For a list of all available plugins, check out</h1><p>#</p>
+<h1 id="https-docs-fastlane-tools-plugins-available-plugins"><a href="#https-docs-fastlane-tools-plugins-available-plugins" class="headerlink" title="https://docs.fastlane.tools/plugins/available-plugins"></a><a href="https://docs.fastlane.tools/plugins/available-plugins" target="_blank" rel="external">https://docs.fastlane.tools/plugins/available-plugins</a></h1><p>#</p>
+<h1 id="Uncomment-the-line-if-you-want-fastlane-to-automatically-update-itself"><a href="#Uncomment-the-line-if-you-want-fastlane-to-automatically-update-itself" class="headerlink" title="Uncomment the line if you want fastlane to automatically update itself"></a>Uncomment the line if you want fastlane to automatically update itself</h1><h1 id="update-fastlane"><a href="#update-fastlane" class="headerlink" title="update_fastlane"></a>update_fastlane</h1><h1 id="平台，安卓还是iOS"><a href="#平台，安卓还是iOS" class="headerlink" title="平台，安卓还是iOS"></a>平台，安卓还是iOS</h1><p>default_platform(:ios) </p>
+<h1 id="iOS进行的操作"><a href="#iOS进行的操作" class="headerlink" title="iOS进行的操作"></a>iOS进行的操作</h1><p>platform :ios do<br>desc “企业版”</p>
+<h1 id="在执行lane之前进行的操作，例如我们在每次打包之前都执行一次pod-install"><a href="#在执行lane之前进行的操作，例如我们在每次打包之前都执行一次pod-install" class="headerlink" title="在执行lane之前进行的操作，例如我们在每次打包之前都执行一次pod install"></a>在执行lane之前进行的操作，例如我们在每次打包之前都执行一次pod install</h1><p>#before_all do</p>
+<h1 id="faselane中pod-install的操作"><a href="#faselane中pod-install的操作" class="headerlink" title="faselane中pod install的操作"></a>faselane中pod install的操作</h1><p>#cocoapods</p>
+<p>#end</p>
+<h1 id="打包的lane操作，我们可以配置多个lane来打不同环境的包"><a href="#打包的lane操作，我们可以配置多个lane来打不同环境的包" class="headerlink" title="打包的lane操作，我们可以配置多个lane来打不同环境的包"></a>打包的lane操作，我们可以配置多个lane来打不同环境的包</h1><p>lane :enterprise do |op|</p>
+<h1 id="打包之前跟新指定配置的描述文件"><a href="#打包之前跟新指定配置的描述文件" class="headerlink" title="打包之前跟新指定配置的描述文件"></a>打包之前跟新指定配置的描述文件</h1><p>update_project_provisioning(</p>
+<h1 id="之前有sigh下载的描述文件存储路径"><a href="#之前有sigh下载的描述文件存储路径" class="headerlink" title="之前有sigh下载的描述文件存储路径"></a>之前有sigh下载的描述文件存储路径</h1><p>profile:”./XXXXDis.mobileprovision”,</p>
+<h1 id="打包配置，Debug，Release"><a href="#打包配置，Debug，Release" class="headerlink" title="打包配置，Debug，Release"></a>打包配置，Debug，Release</h1><p>build_configuration:”Debug”<br>)</p>
+<p>automatic_code_signing(</p>
+<h1 id="工程文件所在路径"><a href="#工程文件所在路径" class="headerlink" title="工程文件所在路径"></a>工程文件所在路径</h1><p>path:”ProjectName.xcodeproj”,</p>
+<h1 id="是否使用自动签名，这里如果是打包的话应该一般都为false吧，默认也是false"><a href="#是否使用自动签名，这里如果是打包的话应该一般都为false吧，默认也是false" class="headerlink" title="是否使用自动签名，这里如果是打包的话应该一般都为false吧，默认也是false"></a>是否使用自动签名，这里如果是打包的话应该一般都为false吧，默认也是false</h1><p>use_automatic_signing:false,</p>
+<h1 id="打包的team-ID，-也就是打包使用的证书中的team-ID，这个如果不知道是什么的话可以在xCode中设置好签名用的描述文件后到xcodeproj下的pbxproj文件中搜索“DEVELOPMENT-TEAM”，它的值就是了"><a href="#打包的team-ID，-也就是打包使用的证书中的team-ID，这个如果不知道是什么的话可以在xCode中设置好签名用的描述文件后到xcodeproj下的pbxproj文件中搜索“DEVELOPMENT-TEAM”，它的值就是了" class="headerlink" title="打包的team ID， 也就是打包使用的证书中的team ID，这个如果不知道是什么的话可以在xCode中设置好签名用的描述文件后到xcodeproj下的pbxproj文件中搜索“DEVELOPMENT_TEAM”，它的值就是了"></a>打包的team ID， 也就是打包使用的证书中的team ID，这个如果不知道是什么的话可以在xCode中设置好签名用的描述文件后到xcodeproj下的pbxproj文件中搜索“DEVELOPMENT_TEAM”，它的值就是了</h1><p>team_id:”XXXX”,</p>
+<h1 id="这个就不用说了，需要修改的targets"><a href="#这个就不用说了，需要修改的targets" class="headerlink" title="这个就不用说了，需要修改的targets"></a>这个就不用说了，需要修改的targets</h1><p>targets:”ProjectName”,</p>
+<h1 id="用哪种方式打包“iPhone-Develop”还是“iPhone-Distribution”"><a href="#用哪种方式打包“iPhone-Develop”还是“iPhone-Distribution”" class="headerlink" title="用哪种方式打包“iPhone Develop”还是“iPhone Distribution”"></a>用哪种方式打包“iPhone Develop”还是“iPhone Distribution”</h1><p>code_sign_identity:”iPhone Distribution”,</p>
+<h1 id="描述文件名称，-也就是使用哪个描述文件打包"><a href="#描述文件名称，-也就是使用哪个描述文件打包" class="headerlink" title="描述文件名称， 也就是使用哪个描述文件打包"></a>描述文件名称， 也就是使用哪个描述文件打包</h1><p>profile_name:”XXXXDis”<br>)</p>
+<p>currentTime = Time.new.strftime(“%Y-%m-%d-%H-%M”)<br>outputDirectory = “./build/#{currentTime}”<br>logDirectory = “#{outputDirectory}/fastlanelog”</p>
+<p>gym(</p>
+<h1 id="打包方式，enterprise-adhoc-appstore-development"><a href="#打包方式，enterprise-adhoc-appstore-development" class="headerlink" title="打包方式，enterprise, adhoc,appstore,development"></a>打包方式，enterprise, adhoc,appstore,development</h1><p>export_method: “enterprise”,<br>scheme: “ProjectName”,</p>
+<h1 id="pod-生成的workspace文件"><a href="#pod-生成的workspace文件" class="headerlink" title="pod 生成的workspace文件"></a>pod 生成的workspace文件</h1><p>workspace:”ProjectName.xcworkspace”,</p>
+<h1 id="输出文件夹"><a href="#输出文件夹" class="headerlink" title="输出文件夹"></a>输出文件夹</h1><p>output_directory: outputDirectory,</p>
+<h1 id="输出包名称"><a href="#输出包名称" class="headerlink" title="输出包名称"></a>输出包名称</h1><p>output_name:”ProjectName.ipa”,</p>
+<h1 id="打包前是否clean"><a href="#打包前是否clean" class="headerlink" title="打包前是否clean"></a>打包前是否clean</h1><p>clean:true,<br>silent:true,</p>
+<h1 id="打包的配置-Debug-Release"><a href="#打包的配置-Debug-Release" class="headerlink" title="打包的配置 Debug Release"></a>打包的配置 Debug Release</h1><p>configuration:”Debug”,</p>
+<h1 id="打包日志输出文件夹"><a href="#打包日志输出文件夹" class="headerlink" title="打包日志输出文件夹"></a>打包日志输出文件夹</h1><p>buildlog_path:logDirectory,</p>
+<h1 id="打包证书"><a href="#打包证书" class="headerlink" title="打包证书"></a>打包证书</h1><p>codesigning_identity:’iPhone Distribution: XXXXXXXXXXXX TECHNOLOGY CO.,LTD.’,</p>
+<h1 id="Xcode-9-默认不允许访问钥匙串的内容-必须要设置此项才可以，运行过程可能会提示是否允许访问钥匙串，需要输入电脑密码"><a href="#Xcode-9-默认不允许访问钥匙串的内容-必须要设置此项才可以，运行过程可能会提示是否允许访问钥匙串，需要输入电脑密码" class="headerlink" title="Xcode 9 默认不允许访问钥匙串的内容,必须要设置此项才可以，运行过程可能会提示是否允许访问钥匙串，需要输入电脑密码"></a>Xcode 9 默认不允许访问钥匙串的内容,必须要设置此项才可以，运行过程可能会提示是否允许访问钥匙串，需要输入电脑密码</h1><p>export_xcargs: “-allowProvisioningUpdates”,</p>
+<h1 id="导出选项"><a href="#导出选项" class="headerlink" title="导出选项"></a>导出选项</h1><p>export_options:{</p>
+<h1 id="打包导出时可选描述文件-“bundleID”-gt-”描述文件名称”"><a href="#打包导出时可选描述文件-“bundleID”-gt-”描述文件名称”" class="headerlink" title="打包导出时可选描述文件 “bundleID”=&gt;”描述文件名称”"></a>打包导出时可选描述文件 “bundleID”=&gt;”描述文件名称”</h1><p>provisioningProfiles: {<br>“com.XXXX.XXXX” =&gt; “XXXXDis.mobileprovision”,<br>},<br>}<br>)<br>archive_path=”Published succeed:/XXXXXXXXXXXX/build/#{currentTime}/ProjectName.ipa”<br>puts “#{archive_path}”<br>end</p>
+<h1 id="当lane执行完成之后进行哪些操作"><a href="#当lane执行完成之后进行哪些操作" class="headerlink" title="当lane执行完成之后进行哪些操作"></a>当lane执行完成之后进行哪些操作</h1><p>after_all do |lane|</p>
+<p>end</p>
+<p>error do |lane, exception|<br>end</p>
+<p>end</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">4、命令行执行打包</div></pre></td></tr></table></figure>
+<p>fastlane ios enterprise<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">### Jenkins配置</div><div class="line"></div><div class="line">##### 1、shell语句</div></pre></td></tr></table></figure></p>
+<p>export LANG=”en_US.UTF-8”<br>pwd<br>cd $WORKSPACE/ProjectName</p>
+<p>fastlane ios enterprise<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">##### 2、Set build description</div><div class="line"></div><div class="line">![Set build description.png](https://upload-images.jianshu.io/upload_images/949086-7a7ac164fd367fb3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div></pre></td></tr></table></figure></p>
+<p>Published succeed:(.*)</p>
+<p><a href="http://XX.XX.XX.XX:8080/job/${JOB_NAME}/ws\1" target="_blank" rel="external">单击ipa包下载</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Regular expression：Published succeed:(.*) // 这里这样写，是因为fastlane文件中输出了以Published succeed:为前缀的一个地址；</div></pre></td></tr></table></figure></p>
+<p>archive_path=”Published succeed:/XXXXXXXXXXXX/build/#{currentTime}/ProjectName.ipa”<br>puts “#{archive_path}”<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">Description：构建后的描述中的```\1```的意思是获取正则表达式获取的内容。</div><div class="line">##### 3、邮件通知</div><div class="line">首先将系统管理员邮箱（你用来发邮件的邮箱）smtp服务打开，拿126邮箱举例，打开邮箱，进入设置，进入POP3/SMTP/IMAP设置，打开如下图几个选项。</div><div class="line">![image.png](https://upload-images.jianshu.io/upload_images/949086-af0ed2f213f7c230.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line">然后，在Jenkins，添加系统管理员邮箱及SMTP服务器，具体步骤是，进入Jenkins的系统管理--&gt;系统设置，找到Jenkins Location，填写系统管理员邮件地址；</div><div class="line">![image.png](https://upload-images.jianshu.io/upload_images/949086-25c47d155c2ead19.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">添加SMTP服务器地址，126邮箱的是smtp.126.com，填写管理员邮箱及密码。</div><div class="line">![image.png](https://upload-images.jianshu.io/upload_images/949086-972342ab6dad517d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">最后，在项目配置中，构建后操作项，添加收取邮件的邮箱，多个邮箱用空格隔开。</div><div class="line">![image.png](https://upload-images.jianshu.io/upload_images/949086-838b145fcc58e12a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line">设置完成后，在构建历史区域可以直接下载打包的ipa包。</div><div class="line">![image.png](https://upload-images.jianshu.io/upload_images/949086-aa38f2a70ea40cfa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</div><div class="line"></div><div class="line">- Jenkins启动</div></pre></td></tr></table></figure></p>
+<p>sudo launchctl load /Library/LaunchDaemons/org.jenkins-ci.plist<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- 停止运行Jenkins</div></pre></td></tr></table></figure></p>
+<p>sudo launchctl unload /Library/LaunchDaemons/org.jenkins-ci.plist<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">- 找回密码</div><div class="line"></div><div class="line">找到config.xml文件</div></pre></td></tr></table></figure></p>
+<p>/Users/Shared/Jenkins/Home/users/admin/config.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">文件中找到，fullName为用户名：```admin```，passwordHash为加密的密码：```111111</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;fullName&gt;admin&lt;/fullName&gt;</div><div class="line">&lt;passwordHash&gt;#jbcrypt:$2a$10$DdaWzN64JgUtLdvxWIflcuQu2fgrrMSAMabF5TSrGK5nXitqK9ZMS&lt;/passwordHash&gt;</div></pre></td></tr></table></figure>
+<p>本文已在版权印备案，如需转载请在版权印获取授权。<br><strong><a href="https://101705110006220.bqy.mobi" target="_blank" rel="external">获取版权</a></strong></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/GitHub/" rel="tag"># GitHub</a>
+          
+            <a href="/tags/博客/" rel="tag"># 博客</a>
+          
+            <a href="/tags/Jenkins/" rel="tag"># Jenkins</a>
+          
+            <a href="/tags/fastlane/" rel="tag"># fastlane</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/29/201706292034/" rel="next" title="Hexo博客框架下Gitment取代多说评论">
+                <i class="fa fa-chevron-left"></i> Hexo博客框架下Gitment取代多说评论
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/28/201809280021/" rel="prev" title="Xcode仿Cocoapods自动化锁定文件（locked file）">
+                Xcode仿Cocoapods自动化锁定文件（locked file） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+       
+         <div id="gitment-container"></div>
+       
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar/avatar-60.png"
+               alt="仁伯安" />
+          <p class="site-author-name" itemprop="name">仁伯安</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zonghongyan" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/ac49bc773ff9" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/zonghongyan" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://yangkaik.github.io" title="yangkaik" target="_blank">yangkaik</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.jianshu.com/u/ac49bc773ff9" title="仁伯安简书" target="_blank">仁伯安简书</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://gold.xitu.io/user/58a17f6c8d6d81006ca065e7" title="掘金" target="_blank">掘金</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://developer.apple.com" title="apple开发者" target="_blank">apple开发者</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jenkins安装"><span class="nav-number">2.</span> <span class="nav-text">Jenkins安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#包括pod、fastlane、git等shell的执行，都依靠这个路径"><span class="nav-number"></span> <span class="nav-text">包括pod、fastlane、git等shell的执行，都依靠这个路径</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#For-more-information-about-the-Appfile-see"><span class="nav-number"></span> <span class="nav-text">For more information about the Appfile, see:</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#https-docs-fastlane-tools-advanced-appfile"><span class="nav-number"></span> <span class="nav-text">https://docs.fastlane.tools/advanced/#appfile</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#This-file-contains-the-fastlane-tools-configuration"><span class="nav-number"></span> <span class="nav-text">This file contains the fastlane.tools configuration</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#You-can-find-the-documentation-at-https-docs-fastlane-tools"><span class="nav-number"></span> <span class="nav-text">You can find the documentation at https://docs.fastlane.tools</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#For-a-list-of-all-available-actions-check-out"><span class="nav-number"></span> <span class="nav-text">For a list of all available actions, check out</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#https-docs-fastlane-tools-actions"><span class="nav-number"></span> <span class="nav-text">https://docs.fastlane.tools/actions</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#For-a-list-of-all-available-plugins-check-out"><span class="nav-number"></span> <span class="nav-text">For a list of all available plugins, check out</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#https-docs-fastlane-tools-plugins-available-plugins"><span class="nav-number"></span> <span class="nav-text">https://docs.fastlane.tools/plugins/available-plugins</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Uncomment-the-line-if-you-want-fastlane-to-automatically-update-itself"><span class="nav-number"></span> <span class="nav-text">Uncomment the line if you want fastlane to automatically update itself</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#update-fastlane"><span class="nav-number"></span> <span class="nav-text">update_fastlane</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#平台，安卓还是iOS"><span class="nav-number"></span> <span class="nav-text">平台，安卓还是iOS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#iOS进行的操作"><span class="nav-number"></span> <span class="nav-text">iOS进行的操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在执行lane之前进行的操作，例如我们在每次打包之前都执行一次pod-install"><span class="nav-number"></span> <span class="nav-text">在执行lane之前进行的操作，例如我们在每次打包之前都执行一次pod install</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#faselane中pod-install的操作"><span class="nav-number"></span> <span class="nav-text">faselane中pod install的操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#打包的lane操作，我们可以配置多个lane来打不同环境的包"><span class="nav-number"></span> <span class="nav-text">打包的lane操作，我们可以配置多个lane来打不同环境的包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#打包之前跟新指定配置的描述文件"><span class="nav-number"></span> <span class="nav-text">打包之前跟新指定配置的描述文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#之前有sigh下载的描述文件存储路径"><span class="nav-number"></span> <span class="nav-text">之前有sigh下载的描述文件存储路径</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#打包配置，Debug，Release"><span class="nav-number"></span> <span class="nav-text">打包配置，Debug，Release</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#工程文件所在路径"><span class="nav-number"></span> <span class="nav-text">工程文件所在路径</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#是否使用自动签名，这里如果是打包的话应该一般都为false吧，默认也是false"><span class="nav-number"></span> <span class="nav-text">是否使用自动签名，这里如果是打包的话应该一般都为false吧，默认也是false</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#打包的team-ID，-也就是打包使用的证书中的team-ID，这个如果不知道是什么的话可以在xCode中设置好签名用的描述文件后到xcodeproj下的pbxproj文件中搜索“DEVELOPMENT-TEAM”，它的值就是了"><span class="nav-number"></span> <span class="nav-text">打包的team ID， 也就是打包使用的证书中的team ID，这个如果不知道是什么的话可以在xCode中设置好签名用的描述文件后到xcodeproj下的pbxproj文件中搜索“DEVELOPMENT_TEAM”，它的值就是了</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#这个就不用说了，需要修改的targets"><span class="nav-number"></span> <span class="nav-text">这个就不用说了，需要修改的targets</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用哪种方式打包“iPhone-Develop”还是“iPhone-Distribution”"><span class="nav-number"></span> <span class="nav-text">用哪种方式打包“iPhone Develop”还是“iPhone Distribution”</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#描述文件名称，-也就是使用哪个描述文件打包"><span class="nav-number"></span> <span class="nav-text">描述文件名称， 也就是使用哪个描述文件打包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#打包方式，enterprise-adhoc-appstore-development"><span class="nav-number"></span> <span class="nav-text">打包方式，enterprise, adhoc,appstore,development</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pod-生成的workspace文件"><span class="nav-number"></span> <span class="nav-text">pod 生成的workspace文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#输出文件夹"><span class="nav-number"></span> <span class="nav-text">输出文件夹</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#输出包名称"><span class="nav-number"></span> <span class="nav-text">输出包名称</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#打包前是否clean"><span class="nav-number"></span> <span class="nav-text">打包前是否clean</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#打包的配置-Debug-Release"><span class="nav-number"></span> <span class="nav-text">打包的配置 Debug Release</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#打包日志输出文件夹"><span class="nav-number"></span> <span class="nav-text">打包日志输出文件夹</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#打包证书"><span class="nav-number"></span> <span class="nav-text">打包证书</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Xcode-9-默认不允许访问钥匙串的内容-必须要设置此项才可以，运行过程可能会提示是否允许访问钥匙串，需要输入电脑密码"><span class="nav-number"></span> <span class="nav-text">Xcode 9 默认不允许访问钥匙串的内容,必须要设置此项才可以，运行过程可能会提示是否允许访问钥匙串，需要输入电脑密码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#导出选项"><span class="nav-number"></span> <span class="nav-text">导出选项</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#打包导出时可选描述文件-“bundleID”-gt-”描述文件名称”"><span class="nav-number"></span> <span class="nav-text">打包导出时可选描述文件 “bundleID”=>”描述文件名称”</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#当lane执行完成之后进行哪些操作"><span class="nav-number"></span> <span class="nav-text">当lane执行完成之后进行哪些操作</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">仁伯安</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+     
+     
+     
+     
+     <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+     <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+     
+         <script type="text/javascript">
+             var gitment = new Gitment({
+                id: document.location.href, 
+                 owner: 'zonghongyan',
+                 repo: 'zonghongyan.github.io',
+                 oauth: {
+                     client_id: '8bb735003260a23ded3d',
+                     client_secret: 'a882b3feb6e36ae4f367fe601615f6d1b7f1a232',
+                 }});
+             gitment.render('gitment-container');
+         </script>
+     
+ 
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
